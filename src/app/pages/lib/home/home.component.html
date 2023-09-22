@@ -1,0 +1,12 @@
+<main>
+  <div class="asdf"></div>
+  <div *ngFor="let route of routes">
+    <a [routerLink]="'/' + route">
+      <div class="link">
+        <span class="link-text">
+          {{ route.toUpperCase() }}
+        </span>
+      </div>
+    </a>
+  </div>
+</main>

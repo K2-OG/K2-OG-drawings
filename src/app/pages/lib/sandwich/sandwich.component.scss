@@ -1,0 +1,167 @@
+$frame-color: #1e1f26;
+
+.frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  margin-top: -200px;
+  margin-left: -200px;
+  border-radius: 2px;
+  box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background: $frame-color;
+  color: #333;
+  font-family: "Open Sans", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+$size: 10px;
+$moveY: 200%;
+$line-color: white;
+$cross-color: #dc143c;
+
+@keyframes moveTop {
+  0% {
+    transform: translateY(0%) rotate(0);
+  }
+  50% {
+    transform: translateY($moveY) rotate(0);
+  }
+  100% {
+    transform: translateY($moveY) rotate(135deg);
+  }
+}
+
+@keyframes moveBot {
+  0% {
+    transform: translateY(0%) rotate(0);
+  }
+  50% {
+    transform: translateY(-$moveY) rotate(0);
+  }
+  100% {
+    transform: translateY(-$moveY) rotate(-135deg);
+  }
+}
+
+@keyframes vanishMid {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes initTop {
+  0% {
+    transform: translateY($moveY) rotate(135deg);
+  }
+  50% {
+    transform: translateY($moveY) rotate(0);
+  }
+  100% {
+    transform: translateY(0%) rotate(0);
+  }
+}
+
+@keyframes initBot {
+  0% {
+    transform: translateY(-$moveY) rotate(-135deg);
+  }
+  50% {
+    transform: translateY(-$moveY) rotate(0);
+  }
+  100% {
+    transform: translateY(0%) rotate(0);
+  }
+}
+
+@keyframes initMid {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.btn {
+  background: none;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+  &.disable {
+    .top {
+      animation: initTop 1s ease-in-out forwards;
+    }
+    .mid {
+      animation: initMid 1s ease-in-out forwards;
+    }
+    .bot {
+      animation: initBot 1s ease-in-out forwards;
+    }
+  }
+  &.active {
+    .line {
+      .part {
+        background: $cross-color;
+        transition: all 0.5s linear;
+        transition-delay: 0.5s;
+      }
+    }
+    .top {
+      animation: moveTop 1s ease-in-out forwards;
+    }
+    .mid {
+      animation: vanishMid 1s ease-in-out forwards;
+    }
+    .bot {
+      animation: moveBot 1s ease-in-out forwards;
+    }
+  }
+  .line {
+    box-shadow: 10px 10px 82px -7px rgba(0, 0, 0, 0.75);
+    display: block;
+    font-size: 0;
+    margin-bottom: $size;
+    .part {
+      display: inline-block;
+      background: $line-color;
+      transition: all 0.5s linear;
+      &.edge {
+        width: $size;
+        height: $size;
+        &.left {
+          border-radius: 50% 0 0 50%;
+        }
+
+        &.right {
+          border-radius: 0 50% 50% 0;
+        }
+      }
+      &.body {
+        width: $size * 6;
+        height: $size;
+      }
+    }
+  }
+}

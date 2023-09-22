@@ -1,0 +1,199 @@
+.frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  margin-top: -200px;
+  margin-left: -200px;
+  border-radius: 2px;
+  box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background: #272c34;
+  color: #333;
+  font-family: "Open Sans", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+$size-frame: 200px;
+$size-sky: 200px;
+$size-sun: 40px;
+$size-height-pyramid: 70px;
+$size-width-pyramid: 150px;
+
+$color-sky: #7ddffc;
+$color-sun: #ffef00;
+$color-pyramid-right: #dddada;
+$color-pyramid-left: #f4f4f4;
+$color-ground: #f0de75;
+$color-shadow: rgba(0, 0, 0, 0.2);
+
+@keyframes moveSun {
+  0% {
+    background: #ff7209;
+    transform: rotate(-75deg);
+  }
+
+  30% {
+    background: #ffef00;
+    transform: rotate(-28deg);
+  }
+
+  50% {
+    background: #ffff44;
+  }
+
+  70% {
+    background: #ffef00;
+  }
+
+  100% {
+    background: #ff7209;
+    transform: rotate(70deg);
+  }
+}
+
+@keyframes shadowPyramidLeft {
+  0% {
+    background: #f4f4f4;
+  }
+
+  30% {
+    background: #f4f4f4;
+  }
+
+  100% {
+    background: #b7b7b7;
+  }
+}
+
+@keyframes shadowPyramidRight {
+  0% {
+    background: #b7b7b7;
+  }
+
+  30% {
+    background: #dddada;
+  }
+
+  70% {
+    background: #f4f4f4;
+  }
+
+  100% {
+    background: #dddada;
+  }
+}
+
+@keyframes moveShadow {
+  0% {
+    clip-path: polygon(0% 0%, 90% 40%, 100% 0%);
+  }
+
+  30% {
+    clip-path: polygon(0% 0%, 80% 50%, 100% 0%);
+  }
+
+  100% {
+    clip-path: polygon(0% 0%, 0% 70%, 100% 0%);
+  }
+}
+
+@keyframes dimSky {
+  0% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.circle {
+  border-radius: 50%;
+  position: relative;
+  width: $size-frame;
+  height: $size-frame;
+  overflow: hidden;
+  animation: dimSky 4s cubic-bezier(0.4, 0, 0.49, 1) infinite;
+
+  div {
+    position: absolute;
+  }
+
+  .sky {
+    z-index: -2;
+    background: $color-sky;
+    border-radius: 50%;
+    width: $size-sky;
+    height: $size-sky;
+  }
+
+  .ground {
+    z-index: -1;
+    bottom: 0;
+    background: $color-ground;
+    width: $size-sky;
+    height: 70px;
+  }
+
+  .sun {
+    background: $color-sun;
+    border-radius: 50%;
+    top: 10px;
+    left: 70px;
+    width: $size-sun;
+    height: $size-sun;
+    transform-origin: 50% 400%;
+    transform: rotate(-65deg);
+    animation: moveSun 4s cubic-bezier(0.4, 0, 0.49, 1) infinite;
+  }
+
+  .pyramid {
+    height: $size-height-pyramid;
+
+    &.pyramid-left {
+      animation: shadowPyramidLeft 4s cubic-bezier(0.4, 0, 0.49, 1) infinite;
+      background: $color-pyramid-left;
+      width: $size-width-pyramid;
+      top: 61px;
+      left: 30px;
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+
+    &.pyramid-right {
+      animation: shadowPyramidRight 4s cubic-bezier(0.4, 0, 0.49, 1) infinite;
+      background: $color-pyramid-right;
+      width: $size-width-pyramid/2;
+      top: 61px;
+      left: 105px;
+      clip-path: polygon(0% 0%, 100% 100%, 20% 100%);
+    }
+  }
+
+  .shadow {
+    animation: moveShadow 4s cubic-bezier(0.4, 0, 0.49, 1) infinite;
+    background: $color-shadow;
+    clip-path: polygon(0% 0%, 80% 40%, 100% 0%);
+    top: 131px;
+    left: 30px;
+    width: $size-width-pyramid;
+    height: $size-height-pyramid;
+  }
+}
