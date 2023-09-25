@@ -1,0 +1,174 @@
+@use "sass:math";
+@use "./vapor.component.scss" as *;
+
+@mixin throwSomeShade($tall, $fat, $shadow-position) {
+  $fatness: math.div($fat, 10);
+  background: linear-gradient($shadow-start-color, $shadow-end-color);
+  width: $fatness;
+  height: $tall;
+  align-self: flex-end;
+  @if $shadow-position == "left" {
+    box-shadow: 1px 0px 1.5px 0px $shadow-end-color;
+    transform: skewY(-$shadow-skew);
+    margin-left: -$fatness;
+  } @else {
+    box-shadow: -1px 0px 1.5px 0px $shadow-end-color;
+    margin-left: $fat;
+    transform: skewY($shadow-skew);
+  }
+}
+@mixin windowToTheWorld($tall, $fat) {
+  $window-frame-min: 8px;
+  $margin: math.div($window-frame-min, 2);
+  $margin-bot: $tall * 0.3;
+  $width: $fat - $window-frame-min;
+  $height: $tall - $window-frame-min - $margin-bot;
+  $window-width: 3.5px;
+  $window-height: 2px;
+  $gap: 2px;
+  width: $width;
+  height: $height;
+  position: absolute;
+  bottom: 5px;
+  margin: 0 $margin $margin-bot $margin;
+  background-color: white;
+  background-size: $window-width $window-height;
+  // $switch: random(2);
+  // $window-glow: $building-color 1px, rgba(0, 0, 0, 0.3) 2px, transparent 0px;
+  // // $window-glow: $building-color 1px, transparent 0px;
+  // @if ($switch==1) {
+  //   background-image: linear-gradient(to right, $window-glow),
+  //     linear-gradient(to bottom, $window-glow);
+  // } @else {
+  //   background-image: linear-gradient(to bottom, $window-glow);
+  // }
+
+  border: #ff4800;
+  display: grid;
+  grid-template:
+    repeat(ceil(math.div($height, $window-height + $gap)), $window-height)
+    /
+    repeat(ceil(math.div($width, $window-width + $gap)), $window-width);
+  gap: $gap;
+}
+
+@mixin towerLoop($shadow-position) {
+  @for $i from 1 through 4 {
+    .tower:nth-child(#{$i}) {
+      $tallness: random(70) + 90px - $i * 20;
+      $fatness: random(25) + 10px;
+      .roof-container {
+        width: $fatness;
+      }
+      @include buildIt($shadow-position, $tallness, $fatness);
+    }
+  }
+}
+
+@mixin buildItUp($shadow-position, $tallness, $fatness, $total-height) {
+  background: $building-color;
+  height: $tallness;
+  width: $fatness;
+  @if ($total-height > $tallness) {
+    top: $building-container-height - $total-height + 1;
+  } @else {
+    // position: relative;
+  }
+  .shadow {
+    @include throwSomeShade($tallness, $fatness, $shadow-position);
+  }
+}
+
+@mixin buildIt($shadow-position, $tallness, $fatness) {
+  @include buildItUp($shadow-position, $tallness, $fatness, $tallness);
+  .windows {
+    @include windowToTheWorld($tallness, $fatness);
+  }
+  $total-height: $tallness;
+  @for $i from 1 through 3 {
+    .roof:nth-child(#{$i}) {
+      $roof-height: math.div(random(200) + 300px, 100);
+      $total-height: $total-height + $roof-height;
+      $current-fat: $fatness - $i * 5;
+      @if ($current-fat<2) {
+        $current-fat: 0;
+      }
+      @if ($i==3) {
+        border-top: $shadow-start-color 0.5px solid;
+      }
+      @include buildItUp(
+        $shadow-position,
+        $roof-height,
+        $current-fat,
+        $total-height
+      );
+    }
+  }
+}
+
+$vertical-position: 52px;
+.buildings-container {
+  position: absolute;
+  width: $size;
+  height: $building-container-height;
+  transform: translateY($vertical-position);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  .buildings {
+    display: flex;
+    align-items: flex-end;
+    // $perspe: 2000px;
+    // -webkit-perspective: $perspe;
+    // perspective: $perspe;
+    // -webkit-transform-style: preserve-3d;
+    // transform-style: preserve-3d;
+    .layer {
+      display: flex;
+      align-items: flex-end;
+      width: 100%;
+      height: 100%;
+      //   &.second-layer {
+      //     display: none;
+      //     transform: translateZ(-500px) translateY(-150px);
+      //     -webkit-transform-style: preserve-3d;
+      //     transform-style: preserve-3d;
+      //   }
+    }
+    &.lefties {
+      .layer {
+        flex-direction: row;
+        &.first-layer {
+          @include towerLoop("right");
+        }
+        // &.second-layer {
+        // @include towerLoop("right");
+        // }
+      }
+    }
+    &.righties {
+      .layer {
+        flex-direction: row-reverse;
+        &.first-layer {
+          @include towerLoop("left");
+        }
+        // &.second-layer {
+        //   @include towerLoop("left");
+        // }
+      }
+    }
+    .tower {
+      .shadow {
+        z-index: 2;
+      }
+      .roof-container {
+        display: flex;
+        justify-content: center;
+        .roof {
+          z-index: -1;
+          position: absolute;
+        }
+      }
+    }
+  }
+}

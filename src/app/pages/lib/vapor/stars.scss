@@ -1,0 +1,25 @@
+@use "sass:math";
+@use "./vapor.component.scss" as *;
+
+// THE HEAVENS
+.stars-container {
+  position: absolute;
+  height: 200px;
+  $divider: 5;
+  $glow: 0px 0px;
+  .stars {
+    @function multiple-box-shadow($n) {
+      $value: "#{random($size)}px #{random(math.div($size, $divider))}px #{$glow} #FFF";
+      @for $i from 2 through $n {
+        $value: "#{$value} , #{random($size)}px #{random(math.div($size, $divider))}px #{$glow} #FFF";
+      }
+      @return unquote($value);
+    }
+    $shadows: multiple-box-shadow(random(7) + 18);
+    width: 0.5px;
+    height: 0.5px;
+    background: transparent;
+    box-shadow: $shadows;
+    animation: animStar 50s linear infinite;
+  }
+}

@@ -1,0 +1,44 @@
+@use "sass:math";
+@use "./vapor.component.scss" as *;
+
+.sun-position {
+  position: absolute;
+  transform-origin: center;
+  transform: translate(math.div($size, 4), math.div($size, 5));
+  box-shadow: 0 0 40px 0 #ff4800;
+  border-radius: 50%;
+  .sun {
+    border-radius: 50%;
+    width: $sun-size;
+    height: $sun-size;
+    background-size: contain;
+    background-position: center;
+    background-image: radial-gradient(at 44% 81%, #ff005e 5%, transparent),
+      linear-gradient(#ffe100, #ff4d00);
+    $mask-vertices: 0 0;
+    $mask-start: 33%;
+    $initial-gap: 1%;
+    $mask-height: 5%;
+    $gap: 0;
+    $y: 0;
+    @for $j from 1 through 7 {
+      @for $i from 0 through 3 {
+        @if $i==1 or $i==2 {
+          $mask-vertices: #{$mask-vertices}, 100% $y;
+        } @else {
+          $mask-vertices: #{$mask-vertices}, 0 $y;
+        }
+        @if $i==1 {
+          @if $j==1 {
+            $y: $mask-start + $mask-height + ($initial-gap) * $j;
+          } @else {
+            $y: $y + $mask-height + ($initial-gap) * $j;
+          }
+        } @else if $i==3 {
+          $y: $y + $initial-gap * $j;
+        }
+      }
+    }
+    clip-path: polygon($mask-vertices);
+  }
+}

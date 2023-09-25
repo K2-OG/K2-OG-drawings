@@ -1,0 +1,51 @@
+@use "sass:math";
+@use "./vapor.component.scss" as *;
+
+// THE GRID
+.grid-wrapper {
+  perspective: 80px;
+  .grid-bg {
+    background: radial-gradient(
+      $grid-color-bright 6%,
+      #090979 25%,
+      #020024 32%
+    );
+    background-position-y: -375px;
+    background-position-x: -600px;
+    background-size: 400%;
+    position: absolute;
+    height: 750px;
+    width: $size;
+    transform-origin: bottom;
+    transform: translateY(252px);
+  }
+  $grid-border: 0.5px;
+  .grid {
+    position: absolute;
+    transform-origin: bottom;
+    transform: translateY(3.333333px) rotateX(160deg) scaleX(4) scaleY(2.7);
+    height: $size;
+    width: $size * 2;
+    background-size: $grid $grid;
+    background-image: linear-gradient(
+        to right,
+        $grid-color-bright $grid-border,
+        transparent 0px
+      ),
+      linear-gradient(
+        to bottom,
+        $grid-color-bright $grid-border,
+        transparent 3px
+      );
+    animation: stroll 7s infinite linear;
+
+    @keyframes stroll {
+      0% {
+        background-position-y: 0;
+      }
+      100% {
+        background-position-y: 240px;
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@ import {
   SandwichPageComponent,
   SunsetPageComponent,
   VaporPageComponent,
+  TesterPageComponent,
 } from './pages';
 import { PageTitleResolver } from './resolvers';
 import { RouteNames } from './enums';
@@ -38,6 +39,11 @@ const routes: Routes = [
   {
     path: RouteNames.VAPOR,
     component: VaporPageComponent,
+    title: PageTitleResolver,
+  },
+  {
+    path: RouteNames.TESTER,
+    component: TesterPageComponent,
     title: PageTitleResolver,
   },
 ];

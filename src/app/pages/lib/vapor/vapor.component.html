@@ -1,7 +1,9 @@
 <main>
   <div class="frame">
     <!-- STARS -->
-    <!-- <div class="stars"></div> -->
+    <div class="stars-container">
+      <div class="stars"></div>
+    </div>
 
     <!-- SUN  -->
     <div class="sun-position">
@@ -10,40 +12,14 @@
 
     <!-- BUILDINGS -->
     <div class="buildings-container">
-      <div class="buildings lefties">
-        <div class="tower">
-          <div class="shadow"></div>
-          <div class="windows"></div>
-          <div class="roof"></div>
-        </div>
-        <div class="tower">
-          <div class="shadow"></div>
-          <div class="windows"></div>
-          <div class="roof"></div>
-        </div>
-        <div class="tower">
-          <div class="shadow"></div>
-          <div class="windows"></div>
-          <div class="roof"></div>
-        </div>
-      </div>
-      <div class="buildings righties">
-        <div class="tower">
-          <div class="shadow"></div>
-          <div class="windows"></div>
-          <div class="roof"></div>
-        </div>
-        <div class="tower">
-          <div class="shadow"></div>
-          <div class="windows"></div>
-          <div class="roof"></div>
-        </div>
-        <div class="tower">
-          <div class="shadow"></div>
-          <div class="windows"></div>
-          <div class="roof"></div>
-        </div>
-      </div>
+      <ng-container
+        [ngTemplateOutlet]="buildings"
+        [ngTemplateOutletContext]="{ side: 'lefties' }"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="buildings"
+        [ngTemplateOutletContext]="{ side: 'righties' }"
+      ></ng-container>
     </div>
 
     <!-- THE GRID -->
@@ -51,5 +27,43 @@
       <div class="grid-bg"></div>
       <div class="grid"></div>
     </div>
+
+    <!-- POST GRAIN -->
+    <!-- <div class="grain"></div> -->
   </div>
 </main>
+
+<ng-template #tower>
+  <div class="tower" *ngFor="let tower of towers">
+    <div class="shadow"></div>
+    <div class="windows"></div>
+    <div class="roof-container">
+      <div class="roof">
+        <div class="shadow"></div>
+      </div>
+      <div class="roof">
+        <div class="shadow"></div>
+      </div>
+      <div class="roof">
+        <div class="shadow"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #buildingLayer let-layerOrder="layerOrder">
+  <div class="layer {{ layerOrder }}">
+    <ng-container *ngTemplateOutlet="tower"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #buildings let-side="side">
+  <div class="buildings {{ side }}">
+    <ng-container
+      [ngTemplateOutlet]="buildingLayer"
+      [ngTemplateOutletContext]="{ layerOrder: 'first-layer' }"
+    ></ng-container>
+    <!-- <div class="layer second-layer">
+    </div> -->
+  </div>
+</ng-template>

@@ -13,6 +13,7 @@ import {
   HomePageComponent,
   SandwichPageComponent,
   SunsetPageComponent,
+  TesterPageComponent,
   VaporPageComponent,
 } from './pages';
 
@@ -22,6 +23,7 @@ const pages = [
   SandwichPageComponent,
   SunsetPageComponent,
   VaporPageComponent,
+  TesterPageComponent,
 ];
 
 @NgModule({

@@ -1,177 +1,37 @@
 @use "/src/variables" as *;
 @use "sass:math";
 
+$size: 400px;
+
+// SUN
+$sun-size: math.div($size, 2);
+
+// BUILDINGS
+$building-color: #14001e;
+$shadow-start-color: #fffad3;
+$shadow-end-color: #fff5b2;
+$shadow-skew: 20deg;
+$building-container-height: 200px;
+
+// THE GRID
+$grid-color-bright: #ff00c6;
+$grid: math.div($size, 15);
+
 main {
   color: black;
   width: 100%;
   height: 100%;
-  $size: 400px;
-
   .frame {
     width: $size;
     height: $size;
     border-radius: 2px;
     box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    background-image: linear-gradient(#1e002d, #b4008d);
-    color: #333;
-    font-family: "Open Sans", Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-    // SUN
-    .sun-position {
-      position: absolute;
-      transform-origin: center;
-      transform: translate(math.div($size, 4), math.div($size, 5));
-      .sun {
-        $sun-size: math.div($size, 2);
-        border-radius: 50%;
-        width: $sun-size;
-        height: $sun-size;
-        background-size: contain;
-        background-position: center;
-        background-image: linear-gradient(#ffe100, #ff4d00);
-        -webkit-mask-image: url("./mask.svg");
-        mask-image: url("./mask.svg");
-        -webkit-mask-size: $sun-size $sun-size;
-        mask-size: $sun-size $sun-size;
-      }
-    }
-
-    // BUILDINGS
-    $shadow-start-color: #fffad3;
-    $shadow-skew: 20deg;
-    @mixin throwSomeShade($tall, $fat, $shadow-position) {
-      $fatness: math.div($fat, 10);
-      background: linear-gradient($shadow-start-color, #fff5b2);
-      width: $fatness;
-      height: $tall;
-      @if $shadow-position == "left" {
-        transform: skewY(-$shadow-skew);
-        margin-left: -$fatness;
-      } @else {
-        margin-left: $fat;
-        transform: skewY($shadow-skew);
-      }
-    }
-    @mixin windowToTheWorld($tall, $fat) {
-      $window-frame: 8px;
-      position: absolute;
-      bottom: 0;
-      $cols: math.div($fat, 4);
-      $rows: math.div($tall, 4);
-      width: $fat - $window-frame;
-      height: $tall - $window-frame;
-      margin: math.div($window-frame, 2);
-      background-color: white;
-      background-size: floor($cols - 1) floor($cols - 1);
-      background-image: linear-gradient(to right, black 2px, transparent 0px),
-        linear-gradient(to bottom, black 2px, transparent 0px);
-    }
-
-    @mixin towerLoop($shadow-position) {
-      @for $i from 1 through 3 {
-        .tower:nth-child(#{$i}) {
-          $randT: math.div(random(10), 10);
-          $randF: math.div(random(10), 10);
-          @if ($randF<0.4) {
-            $randF: $randF + 0.5;
-          }
-          @if ($randT<0.1) {
-            $randT: $randT + 0.5;
-          }
-          $tallness: 130px * $randT;
-          $fatness: 40px * $randF;
-          @include buildIt($shadow-position, $tallness, $fatness);
-        }
-      }
-    }
-
-    @mixin buildIt($shadow-position, $tallness: 100px, $fatness: 30px) {
-      background: black;
-      height: $tallness;
-      width: $fatness;
-      border-top: $shadow-start-color 0.5px solid;
-      .shadow {
-        @include throwSomeShade($tallness, $fatness, $shadow-position);
-      }
-      .windows {
-        @include windowToTheWorld($tallness, $fatness);
-      }
-    }
-
-    $vertical-position: 52px;
-    .buildings-container {
-      display: flex;
-      position: absolute;
-      align-items: flex-end;
-      justify-content: space-between;
-      width: $size;
-      height: 200px;
-      transform: translateY($vertical-position);
-      .buildings {
-        display: flex;
-        align-items: flex-end;
-        &.lefties {
-          flex-direction: row;
-          @include towerLoop("right");
-        }
-        &.righties {
-          flex-direction: row-reverse;
-          @include towerLoop("left");
-        }
-      }
-    }
-    // THE GRID
-    $grid-color-bright: #ff00c6;
-    $grid: math.div($size, 15);
-    .grid-wrapper {
-      perspective: 80px;
-      .grid-bg {
-        background: radial-gradient(
-          $grid-color-bright 0%,
-          #090979 25%,
-          #020024 32%
-        );
-        background-position-y: -375px;
-        background-position-x: -600px;
-        background-size: 400%;
-        position: absolute;
-        height: 750px;
-        width: $size;
-        transform-origin: bottom;
-        transform: translateY(252px);
-      }
-      $grid-border: 0.5px;
-      .grid {
-        position: absolute;
-        transform-origin: bottom;
-        transform: translateY(math.div($size, 3)) rotateX(150deg) scaleX(4);
-        height: $size;
-        width: $size;
-        background-size: $grid $grid;
-        background-image: linear-gradient(
-            to right,
-            $grid-color-bright $grid-border,
-            transparent 0px
-          ),
-          linear-gradient(
-            to bottom,
-            $grid-color-bright $grid-border,
-            transparent 3px
-          );
-        animation: stroll 7s infinite linear;
-
-        @keyframes stroll {
-          0% {
-            background-position-y: 0;
-          }
-          100% {
-            background-position-y: 240px;
-          }
-        }
-      }
-    }
+    background-image: linear-gradient(
+      #060009 15%,
+      #930042 35%,
+      #a10061 40%,
+      #b4008d
+    );
   }
 }
