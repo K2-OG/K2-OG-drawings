@@ -3,6 +3,10 @@ All rights reserved. */
 
 import { Component, OnInit } from '@angular/core';
 
+interface Tower {
+  roofAmount: number[];
+}
+
 @Component({
   selector: 'page-vapor',
   templateUrl: './vapor.component.html',
@@ -16,12 +20,18 @@ import { Component, OnInit } from '@angular/core';
   ],
 })
 export class VaporPageComponent implements OnInit {
-  towers: number[] = [];
-  towersAmmount = 4;
+  towers: Tower[] = [];
+  towersAmmount = 6 - Math.floor(Math.random() * 3);
+  roofsAmmount = 7;
 
   ngOnInit(): void {
     for (let i = 0; i < this.towersAmmount; i++) {
-      this.towers.push(i);
+      const demRoofs = Math.ceil(Math.random() * this.roofsAmmount + 1);
+      let roofs: number[] = [];
+      for (let j = 0; j < demRoofs; j++) {
+        roofs.push(j);
+      }
+      this.towers.push({ roofAmount: roofs });
     }
   }
 }

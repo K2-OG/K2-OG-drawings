@@ -48,8 +48,6 @@ export class HomePageComponent implements OnInit, AfterViewChecked {
         rand = Math.floor(rand * difference);
         rand = rand + min;
         rand = -rand;
-        console.log(rand);
-
         demSpans[key].style.setProperty('--rotation', rand + 'deg');
       }
     }
