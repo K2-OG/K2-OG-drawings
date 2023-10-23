@@ -1,0 +1,88 @@
+@use "sass:math";
+@use "./vapor.component.scss" as *;
+
+@function windows-box-shadow($tall, $fat, $ammount) {
+  $divider: 5;
+  $glow: 1px 0px;
+  @if $tall<=0 {
+    $tall: 2;
+  }
+  @if $fat<=0 {
+    $fat: 2;
+  }
+  $temp2: random(floor($fat)) + 2;
+  $temp: random(floor($tall)) + 2;
+  $value: "#{random($temp2)}px #{$temp}px #{$glow} #fff";
+  @for $i from 2 through $ammount {
+    $value: "#{$value} , #{random(floor($fat)) + 2}px #{random(floor($tall)) + 2}px #{$glow} #fff";
+  }
+  @return unquote($value);
+}
+
+@mixin windowToTheWorld($tall, $fat) {
+  .windows-position {
+    $window-frame-min: 8px;
+    $margin: math.div($window-frame-min, 2);
+    $margin-bot: $tall * 0.3;
+    $width: $fat - $window-frame-min * 2;
+    $height: $tall - $window-frame-min - $margin-bot;
+    $gap: 2px;
+    $window-width: 3.5px;
+    $window-height: 2px;
+    $rows: ceil(math.div($height, $window-height + $gap));
+    $cols: ceil(math.div($width, $window-width + $gap));
+    $helper: ceil(math.div($cols * $rows, 3));
+    @if $helper<=0 {
+      @debug ($helper);
+      $helper: 2;
+    }
+    $windows-population: random($helper - $cols) + $cols;
+    width: $width;
+    height: $height;
+    background: transparent;
+    position: absolute;
+    bottom: 5px;
+    margin: 0 $margin $margin-bot $margin;
+    .windows {
+      $shadows: windows-box-shadow($height, $width, $windows-population);
+      width: $window-width;
+      height: $window-height;
+      background: transparent;
+      box-shadow: $shadows;
+    }
+  }
+}
+
+// @mixin windowToTheWorld($tall, $fat) {
+// $window-frame-min: 8px;
+// $margin: math.div($window-frame-min, 2);
+// $margin-bot: $tall * 0.3;
+// $width: $fat - $window-frame-min;
+// $height: $tall - $window-frame-min - $margin-bot;
+// $window-width: 3.5px;
+// $window-height: 2px;
+// $gap: 2px;
+// width: $width;
+// height: $height;
+// position: absolute;
+// bottom: 5px;
+// margin: 0 $margin $margin-bot $margin;
+// background-color: white;
+// background-size: $window-width $window-height;
+// $window-glow: $building-color 1px, rgba(0, 0, 0, 0.3) 2px, transparent 0px;
+// // $window-glow: $building-color 1px, transparent 0px;
+// $switch: random(2);
+// @if ($switch==1) {
+//   background-image: linear-gradient(to right, $window-glow),
+//     linear-gradient(to bottom, $window-glow);
+// } @else {
+//   background-image: linear-gradient(to bottom, $window-glow);
+// }
+
+// display: grid;
+// grid-template:
+//   repeat(ceil(math.div($height, $window-height + $gap)), $window-height)
+//   /
+//   repeat(ceil(math.div($width, $window-width + $gap)), $window-width);
+// gap: $gap;
+// }

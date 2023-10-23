@@ -1,3 +1,4 @@
+@use "sass:math";
 .frame {
   position: absolute;
   top: 50%;
@@ -180,7 +181,7 @@ $color-shadow: rgba(0, 0, 0, 0.2);
     &.pyramid-right {
       animation: shadowPyramidRight 4s cubic-bezier(0.4, 0, 0.49, 1) infinite;
       background: $color-pyramid-right;
-      width: $size-width-pyramid/2;
+      width: math.div($size-width-pyramid, 2);
       top: 61px;
       left: 105px;
       clip-path: polygon(0% 0%, 100% 100%, 20% 100%);

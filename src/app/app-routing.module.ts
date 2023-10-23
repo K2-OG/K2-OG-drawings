@@ -41,11 +41,11 @@ const routes: Routes = [
     component: VaporPageComponent,
     title: PageTitleResolver,
   },
-  {
-    path: RouteNames.TESTER,
-    component: TesterPageComponent,
-    title: PageTitleResolver,
-  },
+  // {
+  //   path: RouteNames.TESTER,
+  //   component: TesterPageComponent,
+  //   title: PageTitleResolver,
+  // },
 ];
 
 @NgModule({
