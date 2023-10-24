@@ -1,21 +1,83 @@
 @use "sass:math";
 @use "./vapor.component.scss" as *;
 
-@function windows-box-shadow($tall, $fat, $ammount) {
-  $divider: 5;
-  $glow: 1px 0px;
-  @if $tall<=0 {
-    $tall: 2;
+$glow: 1px 0px;
+$window-width: 3.5px;
+$window-height: 2px;
+$window-h-margin: $window-width + 0.5px;
+$window-v-margin: $window-height + 2px;
+
+@function opacity() {
+  @return math.div(random(10), 10);
+}
+
+@function line-up($rows, $cols) {
+  $position: random($rows + 1) * $window-h-margin;
+  $start: 1;
+  $line: "";
+  @if $cols > 0 {
+    $start: random($cols);
+    $length: random($cols + 1 - $start)- 1;
+    $start: $start * $window-h-margin;
+    $line: "#{$start} #{$position} #{$glow} rgba(255,255,255, #{opacity()})";
+    @for $i from 1 through $length {
+      $line: "#{$line}, #{$start + ($window-h-margin * $i)} #{$position} #{$glow} rgba(255,255,255, #{opacity()})";
+    }
+    $line: "#{$line},";
   }
-  @if $fat<=0 {
-    $fat: 2;
+  @return $line;
+}
+
+@function cascade($rows, $cols) {
+  $position: random($cols + 1) * $window-v-margin;
+  $start: 1;
+  $line: "";
+  @if $rows > 0 {
+    $start: random($rows);
+    $length: random($rows + 1 - $start);
+    $start: $start * $window-v-margin;
+    $line: "#{$position} #{$start} #{$glow} rgba(255,255,255, #{opacity()})";
+    @for $i from 1 through $length {
+      $line: "#{$line}, #{$position} #{$start + ($window-v-margin * $i)} #{$glow} rgba(255,255,255, #{opacity()})";
+    }
   }
-  $temp2: random(floor($fat)) + 2;
-  $temp: random(floor($tall)) + 2;
-  $value: "#{random($temp2)}px #{$temp}px #{$glow} #fff";
-  @for $i from 2 through $ammount {
-    $value: "#{$value} , #{random(floor($fat)) + 2}px #{random(floor($tall)) + 2}px #{$glow} #fff";
+  @return $line;
+}
+
+@function corner($rows, $cols) {
+  $position: random($cols + 1) * $window-h-margin;
+  $start: 1;
+  $line: "";
+  @if $rows > 0 {
+    $start: random($rows);
+    $length: random($rows + 1 - $start);
+    $start: $start * $window-v-margin;
+    $line: "#{$position} #{$start} #{$glow} rgba(255,255,255, #{opacity()})";
+    @for $i from 1 through $length {
+      $line: "#{$line}, #{$position} #{$start + ($window-v-margin * $i)} #{$glow} rgba(255,255,255, #{opacity()})";
+    }
+    @if $cols > 0 {
+      $h-start: random($cols);
+      $length: random($cols + 1 - $h-start)- 1;
+      $h-start: $h-start * $window-h-margin;
+      @for $i from 1 through $length {
+        $line: "#{$line}, #{$h-start + ($window-h-margin * $i)} #{$start} #{$glow} rgba(255,255,255, #{opacity()})";
+      }
+    }
+    $line: "#{$line},";
   }
+  @return $line;
+}
+
+@function windows-box-shadow($rows, $cols, $tall, $fat) {
+  //   $divider: 5;
+  //   $helper: ceil(math.div($cols * $rows, 3)) - $cols;
+  //   @if $helper<=0 {
+  //     $helper: 2;
+  //   }
+  //   $windows-population: random($helper) + $cols;
+  $value: "#{corner($rows, $cols)} #{line-up($rows, $cols)} #{cascade($rows, $cols)}";
+  //   $value: "#{line-up($tall, $fat)}, #{cascade($tall, $fat)}, #{line-up($tall, $fat)}, #{cascade($tall, $fat)}";
   @return unquote($value);
 }
 
@@ -26,17 +88,9 @@
     $margin-bot: $tall * 0.3;
     $width: $fat - $window-frame-min * 2;
     $height: $tall - $window-frame-min - $margin-bot;
-    $gap: 2px;
-    $window-width: 3.5px;
-    $window-height: 2px;
-    $rows: ceil(math.div($height, $window-height + $gap));
-    $cols: ceil(math.div($width, $window-width + $gap));
-    $helper: ceil(math.div($cols * $rows, 3));
-    @if $helper<=0 {
-      @debug ($helper);
-      $helper: 2;
-    }
-    $windows-population: random($helper - $cols) + $cols;
+    $rows: floor(math.div($height, $window-v-margin));
+    $cols: floor(math.div($width, $window-h-margin));
+
     width: $width;
     height: $height;
     background: transparent;
@@ -44,7 +98,7 @@
     bottom: 5px;
     margin: 0 $margin $margin-bot $margin;
     .windows {
-      $shadows: windows-box-shadow($height, $width, $windows-population);
+      $shadows: windows-box-shadow($rows, $cols, $height, $width);
       width: $window-width;
       height: $window-height;
       background: transparent;
@@ -52,37 +106,3 @@
     }
   }
 }
-
-// @mixin windowToTheWorld($tall, $fat) {
-// $window-frame-min: 8px;
-// $margin: math.div($window-frame-min, 2);
-// $margin-bot: $tall * 0.3;
-// $width: $fat - $window-frame-min;
-// $height: $tall - $window-frame-min - $margin-bot;
-// $window-width: 3.5px;
-// $window-height: 2px;
-// $gap: 2px;
-// width: $width;
-// height: $height;
-// position: absolute;
-// bottom: 5px;
-// margin: 0 $margin $margin-bot $margin;
-// background-color: white;
-// background-size: $window-width $window-height;
-// $window-glow: $building-color 1px, rgba(0, 0, 0, 0.3) 2px, transparent 0px;
-// // $window-glow: $building-color 1px, transparent 0px;
-// $switch: random(2);
-// @if ($switch==1) {
-//   background-image: linear-gradient(to right, $window-glow),
-//     linear-gradient(to bottom, $window-glow);
-// } @else {
-//   background-image: linear-gradient(to bottom, $window-glow);
-// }
-
-// display: grid;
-// grid-template:
-//   repeat(ceil(math.div($height, $window-height + $gap)), $window-height)
-//   /
-//   repeat(ceil(math.div($width, $window-width + $gap)), $window-width);
-// gap: $gap;
-// }
