@@ -20,6 +20,7 @@ interface Tower {
     './windows.scss',
     './roofs.scss',
     './shadows.scss',
+    './delorean.scss',
   ],
 })
 export class VaporPageComponent implements OnInit {
