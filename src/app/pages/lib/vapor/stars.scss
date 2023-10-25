@@ -1,17 +1,22 @@
 @use "sass:math";
 @use "./vapor.component.scss" as *;
+@use "../../../../common.scss" as *;
 
 // THE HEAVENS
 .stars-container {
   position: absolute;
   height: 200px;
   $divider: 5;
-  $glow: 0px 0px;
+
+  $spread-min: 0.1;
+  $spread-max: 0.8;
+  $blur-min: 1;
+  $blur-max: 2.5;
   .stars {
     @function multiple-box-shadow($n) {
-      $value: "#{random($size)}px #{random(math.div($size, $divider))}px #{$glow} #FFF";
+      $value: "#{random($size)}px #{random(math.div($size, $divider))}px #{randomFloat($blur-min, $blur-max)}px #{randomFloat($spread-min, $spread-max)}px #FFF";
       @for $i from 2 through $n {
-        $value: "#{$value} , #{random($size)}px #{random(math.div($size, $divider))}px #{$glow} #FFF";
+        $value: "#{$value} , #{random($size)}px #{random(math.div($size, $divider))}px #{randomFloat($blur-min, $blur-max)}px #{randomFloat($spread-min, $spread-max)}px #FFF";
       }
       @return unquote($value);
     }

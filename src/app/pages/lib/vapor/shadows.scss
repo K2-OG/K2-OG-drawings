@@ -1,0 +1,21 @@
+@use "sass:math";
+@use "./vapor.component.scss" as *;
+
+@mixin throwSomeShade($tall, $fat, $shadow-position) {
+  $fatness: math.div($fat, 10);
+  background: linear-gradient($shadow-start-color, $shadow-end-color);
+  width: $fatness;
+  height: $tall;
+  align-self: flex-end;
+  z-index: 2;
+  $shadow-standard: 0.5px 1px 0px $shadow-end-color;
+  @if $shadow-position == "left" {
+    box-shadow: 0.5px $shadow-standard;
+    transform: skewY(-$shadow-skew);
+    margin-left: -$fatness;
+  } @else {
+    box-shadow: -0.5px $shadow-standard;
+    margin-left: $fat;
+    transform: skewY($shadow-skew);
+  }
+}

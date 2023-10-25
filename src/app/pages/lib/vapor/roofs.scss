@@ -1,0 +1,135 @@
+@use "sass:math";
+@use "./vapor.component.scss" as *;
+@use "./shadows.scss" as *;
+
+$border: $shadow-start-color 0.5px solid;
+
+@mixin buildItUp($shadow-position, $tallness, $fatness, $total-height) {
+  background: $building-color;
+  height: ceil($tallness) + 1;
+  width: $fatness;
+  @if ($total-height > $tallness) {
+    @if $fatness >= $antenna-limit {
+      top: $building-container-height - $total-height;
+      .roof-shadow {
+        @include throwSomeShade($tallness, $fatness, $shadow-position);
+      }
+    } @else {
+      top: $building-container-height - $total-height + 2.6px;
+    }
+  } @else {
+    .shadow {
+      @include throwSomeShade($tallness, $fatness, $shadow-position);
+    }
+  }
+}
+
+@mixin demRoofies($shadow-position, $tallness, $fatness) {
+  $total-height: $tallness;
+  @for $i from 1 through 6 {
+    .roof {
+      $current-fat: $fatness - $i * 5;
+      $roof-height: math.div(random(200) + 300px, 100);
+      &:nth-child(#{$i}) {
+        $total-height: $total-height + $roof-height;
+        @if ($current-fat < 0.1) {
+          $current-fat: 0;
+        } @else if $current-fat < $antenna-limit {
+          $antenna: (math.div(random(100) + 70, 100) * math.div($tallness, 10));
+          $roof-height: $roof-height + $antenna;
+          $total-height: $total-height + $roof-height;
+          $border-style: solid 1.5px;
+          $border-color: red;
+          border-top: $border-style $border-color;
+          @keyframes blink {
+            0% {
+              border-top: $border-style $border-color;
+            }
+            25% {
+              border-top: $border-style rgba($color: $border-color, $alpha: 0.5);
+            }
+            50% {
+              border-top: $border-style rgba($color: $border-color, $alpha: 0);
+            }
+            75% {
+              border-top: $border-style rgba($color: $border-color, $alpha: 0.5);
+            }
+            100% {
+              border-top: $border-style $border-color;
+            }
+          }
+          animation: blink 1.5s infinite linear;
+          $delay: random(750);
+          animation-delay: #{$delay}ms;
+          @include buildItUp(
+            $shadow-position,
+            $roof-height,
+            $current-fat,
+            $total-height
+          );
+        } @else {
+          @include buildItUp(
+            $shadow-position,
+            $roof-height,
+            $current-fat,
+            $total-height
+          );
+          border-top: $border;
+          @if ($fatness - ($i + 1) * 5) < $antenna-limit {
+            border-top: $border;
+          }
+        }
+
+        &:last-child {
+          @if $current-fat >= $antenna-limit {
+            border-top: $border;
+          }
+          // roof species evo - biodiversity
+          // triangle
+          // &:first-child {
+          //   background: transparent;
+          //   $tempP: $fatness/1px;
+          //   $triangle-height: math.sqrt(math.div(math.pow($tempP, 2), 2)) * 1px;
+          //   border-top: $triangle-height solid transparent;
+          //   border-bottom: $triangle-height solid transparent;
+          //   border-left: $triangle-height solid green;
+
+          //   @if $shadow-position == "left" {
+          //     transform: rotate(135deg);
+          //     margin-left: 0;
+          //   } @else {
+          //     transform: rotate(45deg);
+          //     margin-right: 0;
+          //   }
+
+          //   width: auto;
+          //   height: auto;
+          //   top: $total-height - $roof-height + $triangle-height;
+          //   .shadow {
+          //     display: none;
+          //     @if $shadow-position == "left" {
+          //       transform: rotate(135deg);
+          //       margin-left: 0;
+          //     } @else {
+          //       transform: rotate(45deg);
+          //       margin-right: 0;
+          //     }
+          //   }
+          // }
+          // duomo
+          // &:first-child {
+          //   border-radius: 50% 50% 0 0;
+          //   .shadow {
+          //     display: none;
+          //   }
+          // }
+        }
+      }
+      // @if ($current-fat < 0.1 and $total-height) {
+      //   &:nth-child(#{$i - 1}) {
+      //     border-top: $border;
+      //   }
+      // }
+    }
+  }
+}

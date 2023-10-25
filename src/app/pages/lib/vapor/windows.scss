@@ -1,5 +1,6 @@
 @use "sass:math";
 @use "./vapor.component.scss" as *;
+@use "../../../../common.scss" as *;
 
 $glow: 1px 0px;
 
@@ -77,10 +78,6 @@ $glow: 1px 0px;
   @return unquote($value);
 }
 
-@function randomFloat($min, $max) {
-  @return (math.div(random(11) - 1, 10) * ($max - $min)) + $min;
-}
-
 @mixin windowToTheWorld($tall, $fat) {
   $window-width: randomFloat(2.5, 3.5);
   $gap-h: randomFloat(0.4, 1);
@@ -103,6 +100,8 @@ $glow: 1px 0px;
     position: absolute;
     bottom: 5px;
     margin: 0 $margin $margin-bot $margin;
+    -webkit-box-reflect: below $tall * 0.7
+      linear-gradient(transparent 60%, rgba(0, 0, 0, 0.9));
     .windows {
       $shadows: windows-box-shadow(
         $rows,
