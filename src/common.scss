@@ -1,0 +1,5 @@
+@use "sass:math";
+
+@function randomFloat($min, $max) {
+  @return (math.div(random(11) - 1, 10) * ($max - $min)) + $min;
+}

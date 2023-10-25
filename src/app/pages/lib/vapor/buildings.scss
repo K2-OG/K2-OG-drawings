@@ -1,110 +1,10 @@
 @use "sass:math";
 @use "./vapor.component.scss" as *;
+@use "./windows.scss" as *;
+@use "./shadows.scss" as *;
+@use "./roofs.scss" as *;
 
-@mixin throwSomeShade($tall, $fat, $shadow-position) {
-  $fatness: math.div($fat, 10);
-  background: linear-gradient($shadow-start-color, $shadow-end-color);
-  width: $fatness;
-  height: $tall;
-  align-self: flex-end;
-  z-index: 2;
-  @if $shadow-position == "left" {
-    box-shadow: 1px 0px 1.5px 0px $shadow-end-color;
-    transform: skewY(-$shadow-skew);
-    margin-left: -$fatness;
-  } @else {
-    box-shadow: -1px 0px 1.5px 0px $shadow-end-color;
-    margin-left: $fat;
-    transform: skewY($shadow-skew);
-  }
-}
-@function windows-box-shadow($tall, $fat, $n) {
-  $divider: 5;
-  $glow: 2px 0px;
-  @if $tall<=0 {
-    $tall: 2;
-  }
-  @if $fat<=0 {
-    $fat: 2;
-  }
-  $temp2: random(floor($fat)) + 2;
-  $temp: random(floor($tall)) + 2;
-  $value: "#{random($temp2)}px #{$temp}px #{$glow} #FFF";
-  @for $i from 2 through $n {
-    $value: "#{$value} , #{random(floor($fat)) + 2}px #{random(floor($tall)) + 2}px #{$glow} #FFF";
-  }
-  @return unquote($value);
-}
-
-@mixin windowToTheWorld($tall, $fat) {
-  .windows-position {
-    $window-frame-min: 8px;
-    $margin: math.div($window-frame-min, 2);
-    $margin-bot: $tall * 0.3;
-    $width: $fat - $window-frame-min * 2;
-    $height: $tall - $window-frame-min - $margin-bot;
-    $gap: 2px;
-    $window-width: 3.5px;
-    $window-height: 2px;
-    $windows-min-population: 1;
-    $windows-population: random(
-      ceil(
-          math.div(
-              ceil(math.div($width, $window-width + $gap)) *
-                ceil(math.div($height, $window-height + $gap)),
-              4
-            ) - $windows-min-population
-        ) + $windows-min-population
-    );
-    width: $width;
-    height: $height;
-    background: transparent;
-    position: absolute;
-    bottom: 5px;
-    margin: 0 $margin $margin-bot $margin;
-    .windows {
-      $shadows: windows-box-shadow($height, $width, $windows-population);
-      width: $window-width;
-      height: $window-height;
-      background: transparent;
-      box-shadow: $shadows;
-    }
-  }
-}
-
-// @mixin windowToTheWorld($tall, $fat) {
-// $window-frame-min: 8px;
-// $margin: math.div($window-frame-min, 2);
-// $margin-bot: $tall * 0.3;
-// $width: $fat - $window-frame-min;
-// $height: $tall - $window-frame-min - $margin-bot;
-// $window-width: 3.5px;
-// $window-height: 2px;
-// $gap: 2px;
-// width: $width;
-// height: $height;
-// position: absolute;
-// bottom: 5px;
-// margin: 0 $margin $margin-bot $margin;
-// background-color: white;
-// background-size: $window-width $window-height;
-// $window-glow: $building-color 1px, rgba(0, 0, 0, 0.3) 2px, transparent 0px;
-// // $window-glow: $building-color 1px, transparent 0px;
-// $switch: random(2);
-// @if ($switch==1) {
-//   background-image: linear-gradient(to right, $window-glow),
-//     linear-gradient(to bottom, $window-glow);
-// } @else {
-//   background-image: linear-gradient(to bottom, $window-glow);
-// }
-
-// display: grid;
-// grid-template:
-//   repeat(ceil(math.div($height, $window-height + $gap)), $window-height)
-//   /
-//   repeat(ceil(math.div($width, $window-width + $gap)), $window-width);
-// gap: $gap;
-// }
+$border: $shadow-start-color 0.5px solid;
 
 @mixin towerLoop($shadow-position) {
   @for $i from 1 through 6 {
@@ -121,14 +21,16 @@
 
 @mixin buildItUp($shadow-position, $tallness, $fatness, $total-height) {
   background: $building-color;
-  height: $tallness;
+  height: ceil($tallness) + 1;
   width: $fatness;
   @if ($total-height > $tallness) {
-    top: $building-container-height - $total-height + 0.5;
-    @if $fatness > $antenna-limit {
+    @if $fatness >= $antenna-limit {
+      top: $building-container-height - $total-height;
       .roof-shadow {
         @include throwSomeShade($tallness, $fatness, $shadow-position);
       }
+    } @else {
+      top: $building-container-height - $total-height + 2.6px;
     }
   }
   .shadow {
@@ -139,93 +41,8 @@
 @mixin buildIt($shadow-position, $tallness, $fatness) {
   @include buildItUp($shadow-position, $tallness, $fatness, $tallness);
   @include windowToTheWorld($tallness, $fatness);
+  @include demRoofies($shadow-position, $tallness, $fatness);
   $total-height: $tallness;
-  @for $i from 1 through 6 {
-    .roof {
-      $border: $shadow-start-color 0.5px solid;
-      $current-fat: $fatness - $i * 5;
-      $roof-height: math.div(random(200) + 300px, 100);
-      &:nth-child(#{$i}) {
-        $total-height: $total-height + $roof-height;
-        @if ($current-fat < 0.1) {
-          $current-fat: 0;
-        } @else if $current-fat < $antenna-limit {
-          $antenna: (math.div(random(100) + 70, 100) * math.div($tallness, 10));
-          $roof-height: $roof-height + $antenna;
-          $total-height: $total-height + $antenna;
-          .shadow {
-            display: none;
-          }
-          @include buildItUp(
-            $shadow-position,
-            $roof-height,
-            $current-fat,
-            $total-height
-          );
-        } @else {
-          @include buildItUp(
-            $shadow-position,
-            $roof-height,
-            $current-fat,
-            $total-height
-          );
-          @if ($fatness - ($i + 1) * 5) < $antenna-limit {
-            border-top: $border;
-          }
-        }
-
-        &:last-child {
-          @if $current-fat >= $antenna-limit {
-            border-top: $border;
-          }
-          // roof species evo - biodiversity
-          // triangle
-          // &:first-child {
-          //   background: transparent;
-          //   $tempP: $fatness/1px;
-          //   $triangle-height: math.sqrt(math.div(math.pow($tempP, 2), 2)) * 1px;
-          //   border-top: $triangle-height solid transparent;
-          //   border-bottom: $triangle-height solid transparent;
-          //   border-left: $triangle-height solid green;
-
-          //   @if $shadow-position == "left" {
-          //     transform: rotate(135deg);
-          //     margin-left: 0;
-          //   } @else {
-          //     transform: rotate(45deg);
-          //     margin-right: 0;
-          //   }
-
-          //   width: auto;
-          //   height: auto;
-          //   top: $total-height - $roof-height + $triangle-height;
-          //   .shadow {
-          //     display: none;
-          //     @if $shadow-position == "left" {
-          //       transform: rotate(135deg);
-          //       margin-left: 0;
-          //     } @else {
-          //       transform: rotate(45deg);
-          //       margin-right: 0;
-          //     }
-          //   }
-          // }
-          // duomo
-          // &:first-child {
-          //   border-radius: 50% 50% 0 0;
-          //   .shadow {
-          //     display: none;
-          //   }
-          // }
-        }
-      }
-      // @if ($current-fat < 0.1 and $total-height) {
-      //   &:nth-child(#{$i - 1}) {
-      //     border-top: $border;
-      //   }
-      // }
-    }
-  }
 }
 
 $vertical-position: 52px;
@@ -237,6 +54,7 @@ $vertical-position: 52px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  -webkit-box-reflect: below -1px linear-gradient(transparent 80%, rgba(0, 0, 0, 0.5));
   .buildings {
     display: flex;
     align-items: flex-end;
