@@ -15,7 +15,7 @@ $building-container-height: 200px;
 $antenna-limit: 2;
 
 // THE GRID
-$grid-color-bright: #ff00c6;
+$grid-color-bright: rgb(255, 0, 198);
 $grid: math.div($size, 15);
 
 main {

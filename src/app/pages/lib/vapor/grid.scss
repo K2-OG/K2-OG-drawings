@@ -6,7 +6,7 @@
   perspective: 80px;
   .grid-bg {
     background: radial-gradient(
-      $grid-color-bright 6%,
+      $grid-color-bright 10%,
       #090979 25%,
       #020024 32%
     );
@@ -15,6 +15,22 @@
     background-size: 400%;
     position: absolute;
     height: 750px;
+    width: $size;
+    transform-origin: bottom;
+    transform: translateY(252px);
+  }
+
+  .grid-bg-v {
+    background: radial-gradient(
+      ellipse at top,
+      rgba($grid-color-bright, 0.8) 0%,
+      transparent 30%
+    );
+    background-position-x: 50%;
+    background-size: 100% 1000%;
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 300px;
     width: $size;
     transform-origin: bottom;
     transform: translateY(252px);

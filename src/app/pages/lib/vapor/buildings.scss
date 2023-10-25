@@ -20,7 +20,6 @@ $border: $shadow-start-color 0.5px solid;
 }
 
 @mixin buildItUp($shadow-position, $tallness, $fatness, $total-height) {
-  background: $building-color;
   height: ceil($tallness) + 1;
   width: $fatness;
   @if ($total-height > $tallness) {
@@ -32,9 +31,19 @@ $border: $shadow-start-color 0.5px solid;
     } @else {
       top: $building-container-height - $total-height + 2.6px;
     }
-  }
-  .shadow {
-    @include throwSomeShade($tallness, $fatness, $shadow-position);
+  } @else {
+    $asdf: "transparent #{random(20)}%";
+    background: linear-gradient(
+        to top,
+        rgba($shadow-start-color, 0.5),
+        unquote($asdf)
+      ),
+      $building-color;
+    $qwer: "#{random(20)}px";
+    background-size: unquote($qwer) 100%, 0;
+    .shadow {
+      @include throwSomeShade($tallness, $fatness, $shadow-position);
+    }
   }
 }
 
@@ -98,10 +107,12 @@ $vertical-position: 52px;
       }
     }
     .tower {
+      // background: $building-color;
       .roof-container {
         display: flex;
         justify-content: center;
         .roof {
+          background: $building-color;
           z-index: -1;
           position: absolute;
         }

@@ -10,7 +10,8 @@ $vertical-scaling: 1.1;
     math.div($size, 4 * $vertical-scaling),
     math.div($size, 5)
   );
-  box-shadow: 0 0 40px 0 #ff4800;
+  $sun-glow: 0 0 40px 0 #ff4800;
+  box-shadow: $sun-glow, inset $sun-glow;
   border-radius: 50%;
   .sun {
     border-radius: 50%;
