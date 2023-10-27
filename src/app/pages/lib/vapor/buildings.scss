@@ -1,4 +1,5 @@
 @use "sass:math";
+@use "../../../../common.scss" as *;
 @use "./vapor.component.scss" as *;
 @use "./windows.scss" as *;
 @use "./shadows.scss" as *;
@@ -32,19 +33,51 @@ $border: $shadow-start-color 0.5px solid;
       top: $building-container-height - $total-height + 2.6px;
     }
   } @else {
-    $asdf: "transparent #{random(20)}%";
-    background: linear-gradient(
-        to top,
-        rgba($shadow-start-color, 0.5),
-        unquote($asdf)
-      ),
-      $building-color;
-    $qwer: "#{random(20)}px";
-    background-size: unquote($qwer) 100%, 0;
+    $repeatitions: random(30) + 20;
+    $lights: randomLights($repeatitions);
+    $lights-position: randomLightsPositions($repeatitions);
+    $lights-size: randomLightsSizes($repeatitions);
+    background: $lights $building-color;
+    $qwer: "#{random(5)}px";
+    background-position-x: $lights-position 0;
+    background-size: $lights-size 0;
+    background-repeat: no-repeat;
     .shadow {
       @include throwSomeShade($tallness, $fatness, $shadow-position);
     }
   }
+}
+
+@function randomLightsSizes($repeatitions) {
+  $value: 200;
+  $min: 135;
+  $bg-value: "#{random($value)+$min}% 100%,";
+  @for $i from 0 to $repeatitions {
+    $bg-value: "#{$bg-value} #{random($value)+$min}% 100%,";
+  }
+  @return unquote($bg-value);
+}
+
+@function randomLightsPositions($repeatitions) {
+  $value: 2000;
+  $min: -1000;
+  $bg-value: "#{random($value)+$min}%,";
+  @for $i from 0 to $repeatitions {
+    $bg-value: "#{$bg-value} #{random($value)+$min}%,";
+  }
+  @return unquote($bg-value);
+}
+
+@function randomLights($repeatitions) {
+  $end-max-value: 20;
+  $end-min-value: 30;
+  $alpha-value: 10;
+  $alpha-min: 15;
+  $bg-value: "radial-gradient(ellipse at bottom, rgba(#{randomColor()}, #{random($alpha-value)+$alpha-min}%), transparent #{random($end-max-value)+$end-min-value}%),";
+  @for $i from 0 to $repeatitions {
+    $bg-value: "#{$bg-value} radial-gradient(ellipse at bottom, rgba(#{randomColor()}, #{random($alpha-value)+$alpha-min}%), transparent #{random($end-max-value)+$end-min-value}%), ";
+  }
+  @return unquote($bg-value);
 }
 
 @mixin buildIt($shadow-position, $tallness, $fatness) {
@@ -107,7 +140,6 @@ $vertical-position: 52px;
       }
     }
     .tower {
-      // background: $building-color;
       .roof-container {
         display: flex;
         justify-content: center;
