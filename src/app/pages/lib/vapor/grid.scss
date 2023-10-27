@@ -2,12 +2,13 @@
 @use "./vapor.component.scss" as *;
 
 // THE GRID
+$road-color: #090979;
 .grid-wrapper {
   perspective: 80px;
   .grid-bg {
     background: radial-gradient(
-      $grid-color-bright 10%,
-      #090979 25%,
+      $grid-color-bright 6%,
+      $road-color 25%,
       #020024 32%
     );
     background-position-y: -375px;
@@ -20,14 +21,17 @@
     transform: translateY(252px);
   }
 
+  $road-animation: stroll 5s infinite linear;
+
   .grid-bg-v {
-    background: radial-gradient(
-      ellipse at top,
-      rgba($grid-color-bright, 0.8) 0%,
-      transparent 30%
-    );
+    background: radial-gradient($grid-color-bright 6%, transparent),
+      radial-gradient(
+        ellipse at top,
+        rgba($grid-color-bright, 0.7) 0%,
+        transparent 30%
+      );
     background-position-x: 50%;
-    background-size: 100% 1000%;
+    background-size: 140% 1000%;
     background-repeat: no-repeat;
     position: absolute;
     height: 300px;
@@ -53,15 +57,45 @@
         $grid-color-bright $grid-border,
         transparent 3px
       );
-    animation: stroll 7s infinite linear;
+    animation: $road-animation;
+    background-position-x: -10%;
+  }
 
-    @keyframes stroll {
-      0% {
-        background-position-y: 0;
-      }
-      100% {
-        background-position-y: 240px;
-      }
+  .track {
+    background-image: linear-gradient($road-color, $road-color);
+    transform-origin: bottom;
+    transform: translateY(0) translateX(171px) rotateX(160deg) scaleX(4)
+      scaleY(2.7);
+    position: absolute;
+    height: $size;
+    width: $size/6.6;
+    box-shadow: 0 0 730px 0px $road-color;
+    border: #cc262678 3px solid;
+    border-top: 0;
+    border-bottom: 0;
+    &::after {
+      content: "";
+      background-size: 100% 20%, $size/12.12;
+      background-position: 0 10px, 100% 0;
+      background-image: linear-gradient(
+          to bottom,
+          $road-color 30px,
+          transparent 30px
+        ),
+        linear-gradient(to right, #000000 $grid-border + 3, transparent 0px);
+      position: absolute;
+      height: $size;
+      width: $size/6.6;
+      animation: $road-animation;
     }
+  }
+}
+
+@keyframes stroll {
+  0% {
+    background-position-y: 0;
+  }
+  100% {
+    background-position-y: 240px;
   }
 }

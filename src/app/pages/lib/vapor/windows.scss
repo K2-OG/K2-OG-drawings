@@ -76,7 +76,7 @@ $window-color: "rgba(255,255,255,";
   $window-h-margin,
   $window-v-margin
 ) {
-  $value: "#{corner($rows, $cols, $window-h-margin, $window-v-margin)} #{line-up($rows, $cols, $window-h-margin, $window-v-margin)} #{corner($rows, $cols, $window-h-margin, $window-v-margin)} #{line-up($rows, $cols, $window-h-margin, $window-v-margin)}  #{corner($rows, $cols, $window-h-margin, $window-v-margin)} #{line-up($rows, $cols, $window-h-margin, $window-v-margin)} #{cascade($rows, $cols, $window-h-margin, $window-v-margin)}";
+  $value: "#{corner($rows, $cols, $window-h-margin, $window-v-margin)} #{line-up($rows, $cols, $window-h-margin, $window-v-margin)} #{line-up($rows, $cols, $window-h-margin, $window-v-margin)} #{line-up($rows, $cols, $window-h-margin, $window-v-margin)} #{corner($rows, $cols, $window-h-margin, $window-v-margin)} #{line-up($rows, $cols, $window-h-margin, $window-v-margin)}  #{corner($rows, $cols, $window-h-margin, $window-v-margin)} #{line-up($rows, $cols, $window-h-margin, $window-v-margin)} #{cascade($rows, $cols, $window-h-margin, $window-v-margin)}";
   @return unquote($value);
 }
 

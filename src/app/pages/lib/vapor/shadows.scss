@@ -5,7 +5,7 @@
   $fatness: math.div($fat, 10);
   background: linear-gradient($shadow-start-color, $shadow-end-color);
   width: $fatness;
-  height: $tall;
+  height: $tall + 1px;
   align-self: flex-end;
   z-index: 2;
   $shadow-standard: 0.5px 1px 0px $shadow-end-color;
