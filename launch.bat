@@ -1,1 +1,1 @@
-firebase deploy --only hosting
+ng build & firebase deploy --only hosting

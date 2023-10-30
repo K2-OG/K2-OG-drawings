@@ -16,6 +16,7 @@ import {
   TesterPageComponent,
   VaporPageComponent,
 } from './pages';
+import { RouterModule } from '@angular/router';
 
 const pages = [
   HomePageComponent,

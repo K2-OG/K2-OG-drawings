@@ -64,7 +64,7 @@ $road-color: #090979;
   .track {
     background-image: linear-gradient($road-color, $road-color);
     transform-origin: bottom;
-    transform: translateY(0) translateX(171px) rotateX(160deg) scaleX(4)
+    transform: translateY(2px) translateX(171px) rotateX(160deg) scaleX(4)
       scaleY(2.7);
     position: absolute;
     height: $size;
