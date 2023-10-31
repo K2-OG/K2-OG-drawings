@@ -13,6 +13,7 @@ $border: $shadow-start-color 0.5px solid;
       top: $building-container-height - $total-height;
       .roof-shadow {
         @include throwSomeShade($tallness, $fatness, $shadow-position);
+        background: $shadow-start-color;
       }
     } @else {
       top: $building-container-height - $total-height + 2.6px;
@@ -24,10 +25,15 @@ $border: $shadow-start-color 0.5px solid;
   }
 }
 
+@mixin lilAntenas() {
+}
+
 @mixin demRoofies($shadow-position, $tallness, $fatness) {
   $total-height: $tallness;
-  @for $i from 1 through 6 {
+  $amount: random(6) + 1;
+  @for $i from 1 through $amount {
     .roof {
+      display: block;
       $current-fat: $fatness - $i * 5;
       $roof-height: math.div(random(200) + 300px, 100);
       &:nth-child(#{$i}) {
@@ -77,6 +83,12 @@ $border: $shadow-start-color 0.5px solid;
           border-top: $border;
           @if ($fatness - ($i + 1) * 5) < $antenna-limit {
             border-top: $border;
+          }
+        }
+
+        @if $current-fat > 18px and $amount==$i {
+          &:nth-child(#{$i + 1}) {
+            @include lilAntenas();
           }
         }
 

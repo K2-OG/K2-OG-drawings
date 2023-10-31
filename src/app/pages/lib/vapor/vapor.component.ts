@@ -25,12 +25,12 @@ interface Tower {
 })
 export class VaporPageComponent implements OnInit {
   towers: Tower[] = [];
-  towersAmmount = 6 - Math.floor(Math.random() * 3);
+  towersAmmount = 6;
   roofsAmmount = 7;
 
   ngOnInit(): void {
     for (let i = 0; i < this.towersAmmount; i++) {
-      const demRoofs = Math.ceil(Math.random() * this.roofsAmmount + 1);
+      const demRoofs = this.roofsAmmount;
       let roofs: number[] = [];
       for (let j = 0; j < demRoofs; j++) {
         roofs.push(j);

@@ -8,7 +8,7 @@
   height: $tall + 1px;
   align-self: flex-end;
   z-index: 2;
-  $shadow-standard: 0.5px 1px 0px $shadow-end-color;
+  $shadow-standard: 0.5px 1px 0px $shadow-start-color;
   @if $shadow-position == "left" {
     box-shadow: 0.5px $shadow-standard;
     transform: skewY(-$shadow-skew);

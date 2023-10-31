@@ -5,11 +5,14 @@
 @use "./shadows.scss" as *;
 @use "./roofs.scss" as *;
 
+// $border: $shadow-start-color 0.5px solid;
 $border: $shadow-start-color 0.5px solid;
 
 @mixin towerLoop($shadow-position) {
-  @for $i from 1 through 6 {
+  $amount: random(3) + 3;
+  @for $i from 1 through $amount {
     .tower:nth-child(#{$i}) {
+      display: block;
       $tallness: random(70) + 110px - $i * 15;
       $fatness: random(25) + 15px;
       .roof-container {
@@ -140,6 +143,7 @@ $vertical-position: 52px;
       }
     }
     .tower {
+      display: none;
       .roof-container {
         display: flex;
         justify-content: center;
@@ -147,6 +151,7 @@ $vertical-position: 52px;
           background: $building-color;
           z-index: -1;
           position: absolute;
+          display: none;
         }
       }
     }
