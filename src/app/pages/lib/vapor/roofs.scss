@@ -25,7 +25,44 @@ $border: $shadow-start-color 0.5px solid;
   }
 }
 
-@mixin lilAntenas() {
+@mixin lilAntenas(
+  $current-fat,
+  $tallness,
+  $roof-height,
+  $total-height,
+  $shadow-position
+) {
+  $antenna: (math.div(random(30) + 40, 100)); // * math.div($tallness, 10));
+  $roof-height: $roof-height + $antenna;
+  $total-height: $total-height + $roof-height;
+  $move-x: math.div($current-fat, 2) - 4;
+  transform: translateX($move-x) translateY(-5px);
+  $reflect: $current-fat - $move-x - 2;
+  -webkit-box-reflect: left $reflect;
+  $border-style: solid 1.5px;
+  $border-color: yellow;
+  border-top: $border-style $border-color;
+  @keyframes lilblink {
+    0% {
+      border-top: $border-style $border-color;
+    }
+    25% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0.5);
+    }
+    50% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0);
+    }
+    75% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0.5);
+    }
+    100% {
+      border-top: $border-style $border-color;
+    }
+  }
+  animation: lilblink 1.5s infinite linear;
+  $delay: random(750);
+  animation-delay: #{$delay}ms;
+  @include buildItUp($shadow-position, $roof-height, 1px, $total-height);
 }
 
 @mixin demRoofies($shadow-position, $tallness, $fatness) {
@@ -86,11 +123,9 @@ $border: $shadow-start-color 0.5px solid;
           }
         }
 
-        @if $current-fat > 18px and $amount==$i {
-          &:nth-child(#{$i + 1}) {
-            @include lilAntenas();
-          }
-        }
+        // @if $current-fat > 18px and $amount==$i {
+        //   background-color: red;
+        // }
 
         &:last-child {
           @if $current-fat >= $antenna-limit {
@@ -135,6 +170,18 @@ $border: $shadow-start-color 0.5px solid;
           //     display: none;
           //   }
           // }
+        }
+      }
+
+      @if $current-fat > 18px and $amount==$i {
+        &:nth-child(#{$i + 1}) {
+          @include lilAntenas(
+            $current-fat,
+            $tallness,
+            $roof-height,
+            $total-height,
+            $shadow-position
+          );
         }
       }
       // @if ($current-fat < 0.1 and $total-height) {

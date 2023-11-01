@@ -53,7 +53,7 @@ $border: $shadow-start-color 0.5px solid;
 
 @function randomLightsSizes($repeatitions) {
   $value: 200;
-  $min: 135;
+  $min: 120;
   $bg-value: "#{random($value)+$min}% 100%,";
   @for $i from 0 to $repeatitions {
     $bg-value: "#{$bg-value} #{random($value)+$min}% 100%,";
@@ -62,7 +62,7 @@ $border: $shadow-start-color 0.5px solid;
 }
 
 @function randomLightsPositions($repeatitions) {
-  $value: 2000;
+  $value: 2500;
   $min: -1000;
   $bg-value: "#{random($value)+$min}%,";
   @for $i from 0 to $repeatitions {
