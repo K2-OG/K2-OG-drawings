@@ -1,0 +1,29 @@
+@use "../../../../common.scss" as *;
+
+$size: 600px;
+@function growTheBar($height: $size) {
+  @return $height;
+}
+
+
+.center {
+  background-color: white;
+  width: $size;
+  height: $size;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    @for $i from 1 through 5 {
+      $shorter: 100px;
+      .bar:nth-child(#{$i}) {
+        $bar-color: "rgba(#{randomColor()}, 100%)";
+        background: unquote($bar-color);
+        height: #{growTheBar($shorter * $i)};
+        @if ($i == 4) {
+          height: #{growTheBar($shorter / $i)};
+        }
+        width: 20%;
+      }
+    }
+  }
+}

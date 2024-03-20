@@ -1,0 +1,94 @@
+@use "../../../../common.scss" as *;
+@use "sass:math";
+
+$size: 600px;
+
+$duration: 2s;
+// @keyframes fold {
+//   0% {
+//     clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 75% 100%, 0 100%);
+//   }
+//   100% {
+//     clip-path: polygon(0 0, 100% 0, 100% 50%, 75% 50%, 75% 100%, 0 100%);
+//   }
+// }
+$bg-color: coral;
+
+.center {
+  background-color: $bg-color;
+  width: $size;
+  height: $size;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  // .shifter {
+  //   width: 400px;
+  //   height: 250px;
+  //   background-color: white;
+  //   position: relative;
+  //   animation: fold $duration ease-in-out infinite alternate;
+  // }
+
+  @keyframes first-fold {
+    50% {
+      border-width: 37px;
+    }
+    100% {
+      border-width: 37px;
+    }
+  }
+
+  .container {
+    display: flex;
+    $paper-width: 150px;
+    $paper-height: 190px;
+    $transition-time: 1s;
+    .paper {
+      width: math.div($paper-width, 2);
+      margin: 0 auto;
+      height: $paper-height;
+      position: relative;
+      &.fold-corner {
+        background: indigo;
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          border-style: solid;
+          border-width: 0;
+          border-color: $bg-color $bg-color darkslateblue darkslateblue;
+          border-width: 10px;
+          // transition: all $transition-time ease;
+          // animation: first-fold 1s alternate forwards;
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          color: aliceblue;
+          bottom: 0;
+          border-style: solid;
+          border-color: red yellow blue green;
+          border-width: 10px;
+        }
+        // transform: rotateX(45deg);
+        &.left {
+          &::after {
+            left: 0;
+          }
+          &::before {
+            left: 0;
+            transform: rotate(-90deg);
+          }
+        }
+        &.right {
+          &::after {
+            right: 0;
+          }
+          &::before {
+            right: 0;
+          }
+        }
+      }
+    }
+  }
+}

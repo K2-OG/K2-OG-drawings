@@ -7,4 +7,6 @@ export enum RouteNames {
   SANDWICH = 'sandwich',
   VAPOR = 'vapor',
   // TESTER = 'tester',
+  SASSIER = 'sassier',
+  GEMINI = 'gemini',
 }

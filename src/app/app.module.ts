@@ -10,21 +10,24 @@ import { AppComponent } from './app.component';
 // pages
 import {
   BloomPageComponent,
+  GeminiPageComponent,
   HomePageComponent,
   SandwichPageComponent,
+  SassierPageComponent,
   SunsetPageComponent,
   TesterPageComponent,
   VaporPageComponent,
 } from './pages';
-import { RouterModule } from '@angular/router';
 
 const pages = [
-  HomePageComponent,
   BloomPageComponent,
+  GeminiPageComponent,
+  HomePageComponent,
   SandwichPageComponent,
   SunsetPageComponent,
-  VaporPageComponent,
+  SassierPageComponent,
   TesterPageComponent,
+  VaporPageComponent,
 ];
 
 @NgModule({

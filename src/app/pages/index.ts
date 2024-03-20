@@ -11,3 +11,5 @@ export * from './lib/sandwich/sandwich.component';
 export * from './lib/sunset/sunset.component';
 export * from './lib/vapor/vapor.component';
 export * from './lib/tester/tester.component';
+export * from './lib/sassier/sassier.component';
+export * from './lib/gemini/gemini.component';

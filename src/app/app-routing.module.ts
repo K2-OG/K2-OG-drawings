@@ -11,6 +11,8 @@ import {
   SunsetPageComponent,
   VaporPageComponent,
   TesterPageComponent,
+  SassierPageComponent,
+  GeminiPageComponent,
 } from './pages';
 import { PageTitleResolver } from './resolvers';
 import { RouteNames } from './enums';
@@ -39,6 +41,16 @@ const routes: Routes = [
   {
     path: RouteNames.VAPOR,
     component: VaporPageComponent,
+    title: PageTitleResolver,
+  },
+  {
+    path: RouteNames.SASSIER,
+    component: SassierPageComponent,
+    title: PageTitleResolver,
+  },
+  {
+    path: RouteNames.GEMINI,
+    component: GeminiPageComponent,
     title: PageTitleResolver,
   },
   // {

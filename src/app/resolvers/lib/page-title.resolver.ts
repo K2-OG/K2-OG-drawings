@@ -16,14 +16,17 @@ export class PageTitleResolver implements Resolve<string> {
   constructor() {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<string> {
-    const page = route.url[0]?.path;
+    const page: string = route.url[0]?.path;
+    const pageConverted: string = page?.replace(/-/g, '_');
     const pageTitle = page
-      ? `${TITLE} - ${RouteNames[page.toUpperCase() as keyof typeof RouteNames]
+      ? `${TITLE} - ${RouteNames[
+          pageConverted.toUpperCase() as keyof typeof RouteNames
+        ]
           .charAt(0)
           .toUpperCase()}${RouteNames[
-          page.toUpperCase() as keyof typeof RouteNames
+          pageConverted.toUpperCase() as keyof typeof RouteNames
         ].slice(1)}`
       : TITLE;
-    return of(pageTitle);
+    return of(pageTitle.replace(/-/g, ' '));
   }
 }
