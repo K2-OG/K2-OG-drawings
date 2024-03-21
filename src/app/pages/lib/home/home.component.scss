@@ -1,44 +1,64 @@
 @use "/src/variables" as *;
 @use "../../../../common.scss" as *;
+@use "sass:math";
+
+@property --grad-b {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #fff;
+}
+@property --grad-a {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #fff;
+}
 
 main {
   color: black;
   width: 100%;
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
+  max-width: calc((100px + #{$base-line} * 2) * 3);
   .menu-wrapper {
-    display: flex;
-    height: 100px;
-    flex-wrap: wrap;
+    flex: 1 0;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        .link:hover {
+          --grad-a: rgba(#{randomColor()}, 100%);
+          --grad-b: rgba(#{randomColor()}, 100%);
+          .link-text {
+            color: white;
+            mix-blend-mode: difference;
+            transform: rotate(#{random(90)-45}deg) scale(3);
+          }
+        }
+      }
+    }
     a {
       text-decoration: none;
       color: inherit;
       font-weight: bold;
       .link {
+        border-radius: math.div($base-line, 2);
         margin: $base-line;
-        background: white;
+        background-image: linear-gradient(var(--grad-a), var(--grad-b));
         display: flex;
         justify-content: center;
         align-items: center;
         overflow: hidden;
         height: 100px;
         width: 100px;
-        transition: all 6s ease-out;
+        --grad-a: white;
+        --grad-b: white;
+        transition-duration: 0.5s;
+        transition-timing-function: ease-in-out;
+        transition-property: --grad-a, --grad-b;
         .link-text {
+          color: black;
           transition: transform 0.4s ease-out;
           transform: rotate(0) scale(1);
-        }
-        @for $i from 1 through 10 {
-          &:nth-child(#{$i}):hover {
-            $bg-color: "linear-gradient(rgba(#{randomColor()},100%), rgba(#{randomColor()},100%))";
-            transition: all 6s ease-out;
-            background: unquote($bg-color);
-          }
-        }
-        &:hover {
-          .link-text {
-            transform: rotate(var(--rotation)) scale(3);
-          }
         }
       }
     }

@@ -18,6 +18,7 @@ import {
   TesterPageComponent,
   VaporPageComponent,
 } from './pages';
+import { NavigationService } from './common';
 
 const pages = [
   BloomPageComponent,
@@ -33,7 +34,7 @@ const pages = [
 @NgModule({
   declarations: [AppComponent, ...pages],
   imports: [BrowserModule, AppRoutingModule],
-  providers: [],
+  providers: [NavigationService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
