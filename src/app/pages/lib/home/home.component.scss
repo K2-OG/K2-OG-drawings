@@ -20,6 +20,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   max-width: calc((100px + #{$base-line} * 2) * 3);
+  transform: rotate(-45deg);
   .menu-wrapper {
     flex: 1 0;
 
@@ -31,7 +32,7 @@ main {
           .link-text {
             color: white;
             mix-blend-mode: difference;
-            transform: rotate(#{random(90)-45}deg) scale(3);
+            transform: rotate(#{random(60) + 30}deg) scale(2.4);
           }
         }
       }
@@ -57,8 +58,8 @@ main {
         transition-property: --grad-a, --grad-b;
         .link-text {
           color: black;
-          transition: transform 0.4s ease-out;
-          transform: rotate(0) scale(1);
+          transition: transform 0.3s ease-out;
+          transform: rotate(45deg) scale(1);
         }
       }
     }
