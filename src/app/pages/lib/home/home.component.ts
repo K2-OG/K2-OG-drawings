@@ -26,12 +26,12 @@ export class HomePageComponent implements OnInit, AfterViewChecked {
       'link-text'
     ) as HTMLCollectionOf<HTMLElement>;
     var demSpans = Array.from(arr);
-    if (demSpans.length > 0) {
-      for (let key in demSpans) {
-        demSpans[key].addEventListener('transitionend', this.changeRotation);
-      }
-    }
-    this.changeRotation();
+    // if (demSpans.length > 0) {
+    //   for (let key in demSpans) {
+    //     demSpans[key].addEventListener('transitionend', this.changeRotation);
+    //   }
+    // }
+    // this.changeRotation();
   }
 
   changeRotation(): void {

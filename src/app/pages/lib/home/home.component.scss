@@ -27,7 +27,6 @@ main {
         .link:hover {
           --grad-a: rgba(#{randomColor()}, 100%);
           --grad-b: rgba(#{randomColor()}, 100%);
-          transform: scale(1.2);
           .link-text {
             color: white;
             mix-blend-mode: difference;
@@ -41,6 +40,9 @@ main {
       color: inherit;
       font-weight: bold;
       .link {
+        &:hover {
+          transform: scale(1.1);
+        }
         border-radius: math.div($base-line, 2);
         margin: $base-line;
         background-image: linear-gradient(var(--grad-a), var(--grad-b));
@@ -52,12 +54,12 @@ main {
         width: 100px;
         --grad-a: white;
         --grad-b: white;
-        transition-duration: 0.5s;
+        transition-duration: 0.2s;
         transition-timing-function: ease-in-out;
-        transition-property: --grad-a, --grad-b;
+        transition-property: --grad-a, --grad-b, transform, margin;
         .link-text {
           color: black;
-          transition: transform 0.3s ease-out;
+          transition: transform 0.4s ease-out;
           transform: rotate(45deg) scale(1);
         }
       }
