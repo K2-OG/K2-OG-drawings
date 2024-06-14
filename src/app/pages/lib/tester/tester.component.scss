@@ -1,111 +1,210 @@
-$frame-color: #1e1f26;
-.draw {
-  height: 400px;
-  width: 600px;
-  background: #292a2b;
-  margin: 50px auto;
-  border-radius: 0.5px 0.5px 0 0;
-  box-shadow: 0 0 0 35px #000, 0 0 0 38px darkgray;
+// body,
+// html {
+//   height: 100%;
+//   margin: 0;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// .paper-sheet {
+//   position: relative;
+//   width: 200px;
+//   height: 200px;
+// }
+
+// .fold1,
+// .fold2 {
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   border-style: solid;
+// }
+
+// .fold1 {
+//   border-width: 0 0 100px 100px;
+//   border-color: transparent transparent #ffffff transparent;
+//   animation: fold1 1s ease-in-out forwards;
+// }
+
+// .fold2 {
+//   border-width: 100px 100px 0 0;
+//   border-color: #ffffff transparent transparent transparent;
+//   animation: fold2 1s ease-in-out forwards;
+// }
+
+// .plane {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   width: 0;
+//   height: 0;
+//   border-style: solid;
+//   border-width: 20px 5px;
+//   border-color: transparent transparent #0000ff transparent;
+//   transform-origin: bottom center;
+//   animation: fly 1s ease-in-out forwards 1s;
+// }
+
+// @keyframes fold1 {
+//   0% {
+//     transform: rotate(0deg);
+//   }
+//   100% {
+//     transform: rotate(-90deg);
+//   }
+// }
+
+// @keyframes fold2 {
+//   0% {
+//     transform: rotate(0deg);
+//   }
+//   100% {
+//     transform: rotate(90deg);
+//   }
+// }
+
+// @keyframes fly {
+//   0% {
+//     transform: translate(-50%, -50%) rotate(-90deg);
+//   }
+//   100% {
+//     transform: translate(-50%, -50%) rotate(0deg);
+//   }
+// }
+// Variables
+$yellow-paper: rgb(248, 234, 105);
+$white-paper: #f1f1f1;
+$paper-width: 15rem;
+$paper-height: 19rem;
+$transition-time: 0.4s;
+$number-of-middle-folded-parts: 4;
+$fold-part-height: $paper-height / 4;
+
+// Mixins
+@mixin stacked-shadow($through, $even-color, $odd-color) {
+  $shadow: "";
+  @for $i from 1 through $through {
+    @if ($i % 2 == 0) {
+      $shadow: $shadow + "#{$i}px #{$i}px 0 0 #{$even-color}";
+    } @else {
+      $shadow: $shadow + "#{$i}px #{$i}px 0 0 #{$odd-color}";
+    }
+    $shadow: $shadow + if($i != $through, ", ", "");
+  }
+  box-shadow: unquote($shadow);
+}
+
+// Styles
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+body {
+  background: teal;
+}
+.container {
+  width: 100%;
+  min-height: 60rem;
+  padding: 6rem;
+}
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+.section {
+  margin: 0 2rem 4rem;
+  flex: 1;
+  flex-basis: 0;
+}
+.paper {
+  width: $paper-width;
+  margin: 0 auto;
+  height: $paper-height;
   position: relative;
-  background-image: linear-gradient(
-      -30deg,
-      transparent 0px,
-      transparent 26px,
-      #9d9ea3 26px,
-      #dfe0e2 27px,
-      transparent 27px,
-      transparent 73px,
-      #626367 73px,
-      #626367 74px,
-      transparent 177px
-    ),
-    linear-gradient(
-      -30deg,
-      #636468 0px,
-      #9d9ea3 16px,
-      #dfe0e2 16px,
-      #626367 17px,
-      transparent 17px
-    ),
-    linear-gradient(
-      -30deg,
-      #636468 1px,
-      #f7f7f7 10px,
-      #f7f7f7 20px,
-      transparent 40px,
-      transparent 500px,
-      #949698 820px,
-      #949698 860px,
-      #f7f7f7 880px,
-      #f7f7f7 890px,
-      #636468 899px
-    );
+}
+.fold-corner {
+  background: indigo;
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-style: solid;
+    border-width: 0.5rem;
+    border-color: teal teal silver silver;
+    transition: all $transition-time;
+  }
+  &:hover::after {
+    border-width: 3rem;
+  }
+}
+.fold-middle {
+  perspective: 700px;
+  .slice {
+    width: 100%;
+    height: $fold-part-height;
+    position: relative;
+    transform-style: preserve-3d;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/chicken.jpg");
+    transition: all $transition-time;
+  }
+  &:hover .one {
+    transform: rotateX(-45deg);
+  }
+  &:hover .two,
+  &:hover .four {
+    transform: translateY($fold-part-height) rotateX(90deg);
+  }
+  &:hover .three {
+    transform: translateY($fold-part-height) rotateX(-90deg);
+  }
+  &:hover .overlay::after {
+    opacity: 1;
+  }
+}
+.slice.one {
+  transform-origin: bottom;
 }
 
-.draw:before {
+$slices: two, three, four;
+$i: 1;
+@each $slice in $slices {
+  .slice.#{$slice} {
+    background-position-x: 0;
+    background-position-y: -($fold-part-height * $i);
+    transform: translateY($fold-part-height);
+    transform-origin: top;
+  }
+  $i: $i + 1;
+}
+
+.overlay::after {
   content: "";
-  text-decoration: overline;
-  color: black;
-  line-height: 80px;
-  padding-left: 820px;
-  font-size: 42px;
-  height: 50px;
-  width: 80px;
-  background: #d9dadc;
-  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(5, transparent), to(white));
-  -moz-box-reflect: below 0 -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(250, 250, 250, 0.1)));
-  background-image: linear-gradient(
-      to top,
-      black 0px,
-      #636468 2px,
-      #9d9ea3 16px,
-      #dfe0e2 16px,
-      #626367 17px,
-      #626367 18px,
-      transparent 18px
-    ),
-    linear-gradient(
-      to right,
-      #636468 1px,
-      #f7f7f7 10px,
-      #f7f7f7 20px,
-      transparent 40px,
-      transparent 500px,
-      #949698 820px,
-      #949698 860px,
-      #f7f7f7 880px,
-      #f7f7f7 890px,
-      #636468 899px
-    );
   position: absolute;
-  top: 430px;
-  margin: 20 auto;
-  left: -150px;
-  border-bottom: 3px solid violet;
-  border-bottom-right-radius: 12% 45%;
-  border-bottom-left-radius: 12% 45%;
-  border-image: linear-gradient(to bottom, yellow, rgba(0, 0, 0, 1)) 20 10%;
-  z-index: 9999;
-  border-image-repeat: stretch;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(50, 50, 50, 0.4);
+  opacity: 0;
+  transition: all $transition-time;
 }
 
-.draw:after {
-  content: "\0000a0\0000a0\0000a0\0000a0\0000a0\0000a0\A\A\A\A\A\A\A\A\A\A\A\A\A\A\A\A\A\A\a\a\a\0000a0\0000a0\0000a0\0000a0\0000a0MacBook Pro";
-  white-space: pre;
-  color: grey;
-  height: 480px;
-  width: 140px;
-  background: transparent;
-  background-image: linear-gradient(
-      to top,
-      transparent 7px,
-      rgba(222, 222, 222, 0.3) 9px,
-      transparent 19px
-    ),
-    linear-gradient(to top, #636468 7px, transparent 19px);
-  border-radius: 0 0 20px 20px;
-  position: absolute;
-  top: -30px;
-  left: 240px;
-  z-index: 9999;
+p {
+  font-size: 1.6em;
+  font-family: cursive;
+  color: white;
+  text-align: center;
+  margin-top: 0.65em;
+}
+::selection {
+  background: indigo;
+  color: indianred;
 }

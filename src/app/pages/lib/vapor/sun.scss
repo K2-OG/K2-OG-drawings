@@ -46,5 +46,17 @@ $vertical-scaling: 1.1;
       }
     }
     clip-path: polygon($mask-vertices);
+    animation: sunset 3s infinite;
+    @keyframes sunset {
+      0% {
+        clip-path: polygon($mask-vertices);
+      }
+      50% {
+        clip-path: polygon($mask-vertices);
+      }
+      100% {
+        clip-path: polygon($mask-vertices);
+      }
+    }
   }
 }
