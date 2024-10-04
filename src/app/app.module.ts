@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import {
   BloomPageComponent,
   GeminiPageComponent,
+  GrowPageComponent,
   HomePageComponent,
   SandwichPageComponent,
   SassierPageComponent,
@@ -23,6 +24,7 @@ import { NavigationService } from './common';
 const pages = [
   BloomPageComponent,
   GeminiPageComponent,
+  GrowPageComponent,
   HomePageComponent,
   SandwichPageComponent,
   SunsetPageComponent,

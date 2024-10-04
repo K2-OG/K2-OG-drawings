@@ -10,8 +10,6 @@ $sun-size: math.div($size, 2);
 $building-color: #14001e;
 $shadow-start-color: #fff8c4;
 $shadow-end-color: #ff95aa;
-// $shadow-start-color: #fffad3;
-// $shadow-end-color: #fff5b2;
 $shadow-skew: 20deg;
 $building-container-height: 200px;
 $antenna-limit: 2;
@@ -19,6 +17,8 @@ $antenna-limit: 2;
 // THE GRID
 $grid-color-bright: rgb(255, 0, 198);
 $grid: math.div($size, 15);
+
+$border: $shadow-start-color 0.5px solid;
 
 main {
   color: black;

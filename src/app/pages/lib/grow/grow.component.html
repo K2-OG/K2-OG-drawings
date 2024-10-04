@@ -1,0 +1,52 @@
+<div class="frame">
+  <div class="center">
+    <div class="container">
+      <div class="buildings-container">
+        <ng-container
+          [ngTemplateOutlet]="buildings"
+          [ngTemplateOutletContext]="{ side: 'lefties' }"
+        ></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="buildings"
+          [ngTemplateOutletContext]="{ side: 'righties' }"
+        ></ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #roofs let-amount="amount">
+  <div class="roof-container">
+    <div class="roof" *ngFor="let roof of amount">
+      <div class="roof-shadow"></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #tower>
+  <div class="tower" *ngFor="let tower of towers">
+    <div class="shadow"></div>
+    <ng-container
+      [ngTemplateOutlet]="roofs"
+      [ngTemplateOutletContext]="{ amount: tower.roofAmount }"
+    ></ng-container>
+    <div class="windows-position">
+      <div class="windows"></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #buildingLayer let-layerOrder="layerOrder">
+  <div class="layer {{ layerOrder }}">
+    <ng-container *ngTemplateOutlet="tower"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #buildings let-side="side">
+  <div class="buildings {{ side }}">
+    <ng-container
+      [ngTemplateOutlet]="buildingLayer"
+      [ngTemplateOutletContext]="{ layerOrder: 'first-layer' }"
+    ></ng-container>
+  </div>
+</ng-template>

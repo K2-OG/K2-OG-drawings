@@ -16,6 +16,7 @@
     </div>
 
     <!-- BUILDINGS -->
+    <!-- <ng-container *ngFor="let that of [1, 2, 3, 4, 5, 6]"> -->
     <div class="buildings-container">
       <ng-container
         [ngTemplateOutlet]="buildings"
@@ -26,6 +27,7 @@
         [ngTemplateOutletContext]="{ side: 'righties' }"
       ></ng-container>
     </div>
+    <!-- </ng-container> -->
 
     <!-- THE GRID -->
     <div class="grid-wrapper">
@@ -40,7 +42,7 @@
     </div> -->
 
     <!-- POST GRAIN -->
-    <div class="grain"></div>
+    <!-- <div class="grain"></div> -->
   </div>
 </main>
 
@@ -54,14 +56,16 @@
 
 <ng-template #tower>
   <div class="tower" *ngFor="let tower of towers">
-    <div class="shadow"></div>
+    <div class="body">
+      <div class="shadow"></div>
+      <div class="windows-position">
+        <div class="windows"></div>
+      </div>
+    </div>
     <ng-container
       [ngTemplateOutlet]="roofs"
       [ngTemplateOutletContext]="{ amount: tower.roofAmount }"
     ></ng-container>
-    <div class="windows-position">
-      <div class="windows"></div>
-    </div>
   </div>
 </ng-template>
 

@@ -3,6 +3,63 @@
 
 $vertical-scaling: 1.1;
 
+@function sunflare() {
+  $mask-vertices: "";
+  $initial-gap: 0%;
+  $mask-height: 6%;
+  $mask-start: 33%;
+  $y: 0;
+  @for $j from 1 through 6 {
+    @for $i from 0 through 3 {
+      @if $i==0 or $i==3 {
+        $mask-vertices: #{$mask-vertices}, 0 $y;
+      } @else {
+        $mask-vertices: #{$mask-vertices}, 100% $y;
+      }
+      @if $i==1 {
+        @if $j==1 {
+          $y: $y + $mask-start;
+        } @else {
+          $y: $y + $mask-height + ($initial-gap) * $j;
+        }
+      } @else if $i==3 {
+        $y: $y + $initial-gap * $j;
+      }
+    }
+    @if ($j==1) {
+      $initial-gap: 1%;
+    }
+  }
+  @return $mask-vertices;
+}
+
+@function sunflarePlus() {
+  $mask-vertices: "";
+  $initial-gap: 1%;
+  $mask-height: 6%;
+  $mask-start: 41%;
+  $y: 0;
+  @for $j from 1 through 6 {
+    @for $i from 0 through 3 {
+      @if $i==0 or $i==3 {
+        $mask-vertices: #{$mask-vertices}, 0 $y;
+      } @else {
+        $mask-vertices: #{$mask-vertices}, 100% $y;
+      }
+      @if $i==1 {
+        @if $j==1 {
+          $y: $y + $mask-start;
+        } @else {
+          $y: $y + $mask-height + ($initial-gap) + $j;
+        }
+      } @else if $i==3 {
+        $y: $y + $initial-gap + $j;
+      }
+    }
+  }
+  @return $mask-vertices;
+}
+
 .sun-position {
   position: absolute;
   transform-origin: center;
@@ -13,6 +70,19 @@ $vertical-scaling: 1.1;
   $sun-glow: 0 0 40px 0 #ff4800;
   box-shadow: $sun-glow, inset $sun-glow;
   border-radius: 50%;
+  $sun-afterglow: 0 0 60px 0 #fd662a;
+  @keyframes glow {
+    0% {
+      box-shadow: $sun-glow;
+    }
+    50% {
+      box-shadow: $sun-afterglow;
+    }
+    100% {
+      box-shadow: $sun-glow;
+    }
+  }
+  animation: 2s linear infinite running glow;
   .sun {
     border-radius: 50%;
     width: $sun-size * $vertical-scaling;
@@ -21,42 +91,20 @@ $vertical-scaling: 1.1;
     background-position: center;
     background-image: radial-gradient(at 44% 81%, #ff005e 5%, transparent),
       linear-gradient(#ffe100, #ff4d00);
-    $mask-vertices: 0 0;
+
+    // dem
+    $mask-vertices: "";
     $mask-start: 33%;
-    $initial-gap: 1%;
-    $mask-height: 5%;
-    $gap: 0;
-    $y: 0;
-    @for $j from 1 through 7 {
-      @for $i from 0 through 3 {
-        @if $i==1 or $i==2 {
-          $mask-vertices: #{$mask-vertices}, 100% $y;
-        } @else {
-          $mask-vertices: #{$mask-vertices}, 0 $y;
-        }
-        @if $i==1 {
-          @if $j==1 {
-            $y: $mask-start + $mask-height + ($initial-gap) * $j;
-          } @else {
-            $y: $y + $mask-height + ($initial-gap) * $j;
-          }
-        } @else if $i==3 {
-          $y: $y + $initial-gap * $j;
-        }
-      }
-    }
-    clip-path: polygon($mask-vertices);
-    animation: sunset 3s infinite;
+    $init-clip: sunflare();
+    $transition-clip: sunflarePlus();
     @keyframes sunset {
       0% {
-        clip-path: polygon($mask-vertices);
-      }
-      50% {
-        clip-path: polygon($mask-vertices);
+        clip-path: polygon($transition-clip);
       }
       100% {
-        clip-path: polygon($mask-vertices);
+        clip-path: polygon($init-clip);
       }
     }
+    animation: 7s linear infinite running sunset;
   }
 }

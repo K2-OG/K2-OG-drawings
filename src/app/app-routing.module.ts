@@ -13,6 +13,7 @@ import {
   TesterPageComponent,
   SassierPageComponent,
   GeminiPageComponent,
+  GrowPageComponent,
 } from './pages';
 import { PageTitleResolver } from './resolvers';
 import { RouteNames } from './enums';
@@ -53,11 +54,16 @@ const routes: Routes = [
     component: GeminiPageComponent,
     title: PageTitleResolver,
   },
-  // {
-  //   path: RouteNames.TESTER,
-  //   component: TesterPageComponent,
-  //   title: PageTitleResolver,
-  // },
+  {
+    path: RouteNames.TESTER,
+    component: TesterPageComponent,
+    title: PageTitleResolver,
+  },
+  {
+    path: RouteNames.GROW,
+    component: GrowPageComponent,
+    title: PageTitleResolver,
+  },
 ];
 
 @NgModule({

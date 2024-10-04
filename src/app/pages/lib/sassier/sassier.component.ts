@@ -9,5 +9,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sassier.component.scss'],
 })
 export class SassierPageComponent implements OnInit {
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(~1);
+  }
 }

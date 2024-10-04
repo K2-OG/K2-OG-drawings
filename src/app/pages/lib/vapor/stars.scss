@@ -1,4 +1,5 @@
 @use "sass:math";
+@use "sass:string";
 @use "./vapor.component.scss" as *;
 @use "../../../../common.scss" as *;
 
@@ -21,6 +22,22 @@
       @return unquote($value);
     }
     $shadows: multiple-box-shadow(random(7) + 18);
+    $temp: split(quote($shadows), ", ");
+    @debug split("A,B,e,C,D", ",");
+    @debug length("A,B,e,C,D");
+    $shadows-blink: $shadows;
+    @keyframes stars {
+      0% {
+        box-shadow: $shadows;
+      }
+      50% {
+        box-shadow: $shadows-blink;
+      }
+      100% {
+        box-shadow: $shadows;
+      }
+    }
+    animation: 3s linear infinite stars;
     width: 0.5px;
     height: 0.5px;
     background: transparent;

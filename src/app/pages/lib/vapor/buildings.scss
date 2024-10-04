@@ -5,16 +5,50 @@
 @use "./shadows.scss" as *;
 @use "./roofs.scss" as *;
 
-// $border: $shadow-start-color 0.5px solid;
 $border: $shadow-start-color 0.5px solid;
+
+$exit: 300px;
+@keyframes zoomInRight {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX($exit * 0.75) scale(1.5);
+  }
+  100% {
+    transform: translateX($exit) scale(2);
+  }
+}
+
+@keyframes zoomInLeft {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-$exit * 0.75) scale(1.5);
+  }
+  100% {
+    transform: translateX(-$exit) scale(2);
+  }
+}
 
 @mixin towerLoop($shadow-position) {
   $amount: random(3) + 3;
-  @for $i from 1 through $amount {
+  @for $i from 1 through $amount + 1 {
     .tower:nth-child(#{$i}) {
-      display: block;
       $tallness: random(70) + 110px - $i * 15;
       $fatness: random(25) + 15px;
+      transform-origin: bottom;
+      @if ($i> $amount) {
+        opacity: 0;
+      }
+      $animation-settings: 15s linear forwards;
+
+      @if ($shadow-position== "right") {
+        // animation: zoomInLeft $animation-settings;
+      } @else {
+        // animation: zoomInRight $animation-settings;
+      }
       .roof-container {
         width: $fatness;
       }
@@ -24,29 +58,27 @@ $border: $shadow-start-color 0.5px solid;
 }
 
 @mixin buildItUp($shadow-position, $tallness, $fatness, $total-height) {
-  height: ceil($tallness) + 1;
+  height: ceil($tallness);
   width: $fatness;
   @if ($total-height > $tallness) {
-    @if $fatness >= $antenna-limit {
-      top: $building-container-height - $total-height;
-      .roof-shadow {
-        @include throwSomeShade($tallness, $fatness, $shadow-position);
-      }
-    } @else {
-      top: $building-container-height - $total-height + 2.6px;
-    }
+    // @if $fatness >= $antenna-limit {
+    //   top: $building-container-height - $total-height;
+    // } @else {
+    //   top: $building-container-height - $total-height + 2.6px;
+    // }
   } @else {
     $repeatitions: random(30) + 20;
     $lights: randomLights($repeatitions);
     $lights-position: randomLightsPositions($repeatitions);
     $lights-size: randomLightsSizes($repeatitions);
-    background: $lights $building-color;
-    $qwer: "#{random(5)}px";
-    background-position-x: $lights-position 0;
-    background-size: $lights-size 0;
-    background-repeat: no-repeat;
-    .shadow {
-      @include throwSomeShade($tallness, $fatness, $shadow-position);
+    .body {
+      background: $lights $building-color;
+      background-position-x: $lights-position 0;
+      background-size: $lights-size 0;
+      background-repeat: no-repeat;
+      .shadow {
+        @include throwSomeShade($tallness, $fatness, $shadow-position);
+      }
     }
   }
 }
@@ -99,7 +131,7 @@ $vertical-position: 52px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  -webkit-box-reflect: below -1px linear-gradient(transparent 80%, rgba(0, 0, 0, 0.5));
+  -webkit-box-reflect: below -1px linear-gradient(transparent 80%, rgba(0, 0, 0, 0.08));
   .buildings {
     display: flex;
     align-items: flex-end;
@@ -122,6 +154,9 @@ $vertical-position: 52px;
     }
     &.lefties {
       .layer {
+        .tower {
+          margin-right: 2px;
+        }
         flex-direction: row;
         @include towerLoop("right");
         &.first-layer {
@@ -133,6 +168,9 @@ $vertical-position: 52px;
     }
     &.righties {
       .layer {
+        .tower {
+          margin-left: 2px;
+        }
         flex-direction: row-reverse;
         @include towerLoop("left");
         &.first-layer {
@@ -143,14 +181,20 @@ $vertical-position: 52px;
       }
     }
     .tower {
-      display: none;
+      display: flex;
+      flex-direction: column-reverse;
+      .body {
+        border-top: $border;
+      }
       .roof-container {
         display: flex;
         justify-content: center;
+        align-items: center;
+        flex-direction: column-reverse;
         .roof {
           background: $building-color;
-          z-index: -1;
-          position: absolute;
+          // z-index: -1;
+          // position: absolute;
           display: none;
         }
       }

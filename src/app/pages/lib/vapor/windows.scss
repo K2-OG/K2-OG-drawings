@@ -11,7 +11,11 @@ $glow: 1px 0px;
 $window-color: "rgba(255,255,255,";
 
 @function line-up($rows, $cols, $window-h-margin, $window-v-margin) {
-  $position: random($rows + 1) * $window-h-margin;
+  $start: $rows + 1;
+  @if ($rows + 1 < 1) {
+    $start: 1;
+  }
+  $position: random($start) * $window-h-margin;
   $start: 1;
   $line: "";
   @if $cols > 0 {
@@ -103,7 +107,7 @@ $window-color: "rgba(255,255,255,";
     bottom: 5px;
     margin: 0 $margin $margin-bot $margin;
     -webkit-box-reflect: below $tall * 0.7
-      linear-gradient(transparent 60%, rgba(0, 0, 0, 0.9));
+      linear-gradient(transparent 60%, rgba(0, 0, 0, 0.3));
     .windows {
       $shadows: windows-box-shadow(
         $rows,
