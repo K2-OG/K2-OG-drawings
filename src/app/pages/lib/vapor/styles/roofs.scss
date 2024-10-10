@@ -1,0 +1,95 @@
+@use "sass:math";
+@use "../vapor.component.scss" as *;
+@use "./shadows.scss" as shadows;
+@use "./antennas.scss" as antennas;
+
+@mixin buildItUp($shadow-position, $tallness, $fatness, $total-height, $align) {
+  background: $building-color;
+  height: ceil($tallness) + 1;
+  width: $fatness;
+  @if ($total-height > $tallness) {
+    // @if ($align == 1 or $align == 3) {
+    //   display: flex;
+    //   @if ($align == 1) {
+    //     justify-content: flex-end;
+    //   } @else if ($align == 3) {
+    //     justify-content: flex-start;
+    //   }
+    //   &::after {
+    //     content: "";
+    //     display: inline-block;
+    //     border-style: solid;
+    //     border-color: transparent transparent transparent transparent;
+    //     border-width: $tallness;
+    //     border-bottom: red solid $tallness;
+    //     @if ($align == 1) {
+    //       justify-self: flex-end;
+    //       margin-left: $tallness;
+    //       transform: rotate(-135deg);
+    //     } @else if ($align == 3) {
+    //       margin-right: $tallness;
+    //       justify-self: flex-start;
+    //       transform: rotate(135deg);
+    //     }
+    //   }
+    // }
+    @if $fatness >= $antenna-limit {
+      top: $building-container-height - $total-height;
+      .roof-shadow {
+        @include shadows.throwSomeShade($tallness, $fatness, $shadow-position);
+        background: $shadow-start-color;
+      }
+    } @else {
+      top: $building-container-height - $total-height + 2.6px;
+    }
+  }
+}
+
+@mixin demRoofies($shadow-position, $tallness, $fatness, $align) {
+  $total-height: $tallness;
+  $amount: random(6) + 1;
+  @for $i from 1 through $amount {
+    .roof {
+      display: block;
+      $current-fat: $fatness - $i * 5;
+      $roof-height: math.div(random(200) + 300px, 100);
+      &:nth-child(#{$i}) {
+        $total-height: $total-height + $roof-height;
+        @if ($current-fat < 0.1) {
+          $current-fat: 0;
+        } @else if $current-fat < $antenna-limit {
+          @include antennas.radio(
+            $roof-height,
+            $total-height,
+            $tallness,
+            $align
+          );
+        } @else {
+          border-top: $border;
+          margin-bottom: -1px;
+          z-index: 1;
+          @include buildItUp(
+            $shadow-position,
+            $roof-height,
+            $current-fat,
+            $total-height,
+            $align
+          );
+        }
+      }
+
+      @if ($current-fat > 18px and $amount==$i) {
+        &:nth-child(#{$i + 1}) {
+          @include antennas.lilAntenas(
+            $current-fat,
+            $tallness,
+            $roof-height,
+            $total-height,
+            $shadow-position,
+            $align
+          );
+        }
+      }
+    }
+  }
+}

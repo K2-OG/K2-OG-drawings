@@ -1,0 +1,117 @@
+@use "sass:math";
+@use "../vapor.component.scss" as *;
+
+$width: 60px;
+$height: 80px;
+
+.delorean-bopper {
+  // animation: chase 0.8s infinite linear;
+  @keyframes chase {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  .delorean {
+    position: absolute;
+    width: $width;
+    height: $height;
+    background: linear-gradient(silver 0 0),
+      conic-gradient(
+        transparent 0deg 180deg,
+        silver 180deg 198deg,
+        transparent 198deg 360deg
+      ),
+      conic-gradient(
+        transparent 0deg 165deg,
+        silver 165deg 180deg,
+        transparent 180deg 360deg
+      ),
+      linear-gradient(green 0px, green 70px, transparent 70px, transparent 100%);
+    background-size: 40px 70px, 20px 130px, 20px 130px, $width $height;
+    background-position: 10px 0, 0px -60px, 40px -65px, 0 0;
+    background-repeat: no-repeat;
+    transform: translate(
+        math.div($size, 2) - math.div($width, 2),
+        math.div($size, 1.25) - math.div($height, 2)
+      )
+      scale(1.2);
+    &::before {
+      content: "";
+      width: $width;
+      height: $height;
+      position: absolute;
+      background-repeat: no-repeat, no-repeat;
+      background-image: 
+        // tires
+        linear-gradient(black 0 0), linear-gradient(black 0 0),
+        // bumper
+        linear-gradient(rgb(62, 61, 61) 0 0),
+        // body
+        linear-gradient(gray 0 0),
+        // lights
+        linear-gradient(to bottom, red, orange),
+        linear-gradient(to bottom, red, orange),
+        // back window
+        linear-gradient(rgb(49, 32, 45) 0 0),
+        conic-gradient(
+          at 100% 0,
+          transparent 0deg 180deg,
+          rgb(49, 32, 45) 180deg 198deg,
+          transparent 198deg 360deg
+        ),
+        conic-gradient(
+          at 0 0,
+          transparent 0deg 165deg,
+          rgb(49, 32, 45) 165deg 180deg,
+          transparent 180deg 360deg
+        );
+      background-size: 
+        // tires
+        10px 10px, 10px 10px,
+        // bumper
+        $width 5px,
+        // body
+        $width 5px,
+        // lights
+        18px 8px,
+        18px 8px,
+        // back window
+        30px 25px,
+        10px 25px, 10px 25px;
+      background-position: 
+        // tires
+        5px 70px, 45px 70px,
+        // bumper
+        0px 65px,
+        // body
+        0 60px,
+        // lights
+        5px 52px,
+        37px 52px,
+        // back window
+        15px 20px,
+        5px 20px, 45px 20px;
+    }
+    &::after {
+      content: "";
+      width: $width;
+      height: $height;
+      position: absolute;
+      background-repeat: no-repeat;
+
+      // background-image: linear-gradient(black 0 0);
+      background-size: 15px 10px;
+      // background: linear-gradient(green, green) 10px 10px / 5px 5px;
+      // background-image: linear-gradient(red, red) 20px 20px / 50% 50%;
+      // background: linear-gradient(rgb(37, 37, 37), rgb(172, 124, 124)) 15px 10px /
+      //     5px 5px,
+      //   linear-gradient(gray 0 0) 20px 20px / 10px 100px;
+    }
+  }
+}

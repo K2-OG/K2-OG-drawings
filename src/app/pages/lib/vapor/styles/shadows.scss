@@ -1,5 +1,5 @@
 @use "sass:math";
-@use "./vapor.component.scss" as *;
+@use "../vapor.component.scss" as *;
 
 @mixin throwSomeShade($tall, $fat, $shadow-position) {
   $fatness: math.div($fat, 10);
@@ -8,14 +8,12 @@
   height: $tall + 1px;
   align-self: flex-end;
   z-index: 2;
-  $shadow-standard: 0.5px 1px 0px $shadow-start-color;
+  $shadow-standard: 0px 0.5px 2px 0px $shadow-start-color;
   @if $shadow-position == "left" {
-    box-shadow: 0.5px $shadow-standard;
-    transform: skewY(-$shadow-skew);
+    box-shadow: $shadow-standard;
     margin-left: -$fatness;
   } @else {
-    box-shadow: -0.5px $shadow-standard;
+    box-shadow: -0px $shadow-standard;
     margin-left: $fat;
-    transform: skewY($shadow-skew);
   }
 }

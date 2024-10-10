@@ -1,0 +1,74 @@
+@use "@sass-fairy/string";
+@use "../../../../../common.scss" as *;
+
+$light-start-pos-x: -100;
+
+@function randomLightsSizes($repeatitions) {
+  $value: 1000;
+  $min: 220;
+  $bg-value: "#{random($value)+$min}% 100%,";
+  @for $i from 0 to $repeatitions {
+    $bg-value: "#{$bg-value} #{random($value)+$min}% 100%,";
+  }
+  @return unquote($bg-value);
+}
+
+@function randomLightsPositions($repeatitions) {
+  $bg-value: "#{$light-start-pos-x }%,";
+  @for $i from 0 to $repeatitions {
+    $mod: random(2);
+    @if $mod == 1 {
+      $mod: 1;
+    } @else {
+      $mod: -2;
+    }
+    $bg-value: "#{$bg-value} #{$mod*$light-start-pos-x}%,";
+  }
+  @return unquote($bg-value);
+}
+
+@function randomLights($repeatitions) {
+  $end-max-value: 10;
+  $end-min-value: 0;
+  $alpha-value: 15;
+  $alpha-min: 5;
+  $bg-value: "radial-gradient(ellipse at bottom, rgba(#{randomColor()}, #{random($alpha-value)+$alpha-min}%), transparent #{random($end-max-value)+$end-min-value}%),";
+  @for $i from 0 to $repeatitions {
+    $bg-value: "#{$bg-value} radial-gradient(ellipse at bottom, rgba(#{randomColor()}, #{random($alpha-value)+$alpha-min}%), transparent #{random($end-max-value)+$end-min-value}%), ";
+  }
+  @return unquote($bg-value);
+}
+
+@mixin lightEmUp($building-color) {
+  $repeatitions: random(30) + 20;
+  $lights: randomLights($repeatitions);
+  $lights-position: randomLightsPositions($repeatitions);
+  $lights-size: randomLightsSizes($repeatitions);
+  .body {
+    background: $lights $building-color;
+    background-position-x: $lights-position 0;
+    background-size: $lights-size 0;
+    $traffic-mvmnt: string.replace(
+      $lights-position,
+      " #{$light-start-pos-x}%",
+      " 400%"
+    );
+    $traffic-mvmnt: string.replace($traffic-mvmnt, " 200%", " -300%");
+    background-repeat: no-repeat;
+    @keyframes traffic {
+      0% {
+        background-position-x: $lights-position 0;
+      }
+      99.9% {
+        background-position-x: $traffic-mvmnt 0;
+      }
+      100% {
+        background-position-x: $lights-position 0;
+      }
+    }
+    animation: unquote("#{randomFloat(10,20)}s") linear infinite traffic;
+    $delay-max: 50;
+    $delay: random($delay-max);
+    // animation-delay: #{$delay}ms;
+  }
+}

@@ -1,0 +1,75 @@
+@use "sass:math";
+@use "@sass-fairy/string";
+@use "../vapor.component.scss" as *;
+@use "../../../../../common.scss" as *;
+
+// THE HEAVENS
+.stars-container {
+  position: absolute;
+  height: 200px;
+  $divider: 5;
+
+  $spread-min: 0.1;
+  $spread-max: 0.8;
+  $blur-min: 1;
+  $blur-max: 2.5;
+  .stars {
+    .star {
+      width: 0.5px;
+      height: 0.5px;
+      background: transparent;
+    }
+    @for $i from 1 to random(7) + 18 {
+      .star:nth-child(#{$i}) {
+        $shadow: unquote(
+          "#{random($size)}px #{random(math.div($size, $divider))}px #{randomFloat($blur-min, $blur-max)}px #{randomFloat($spread-min, $spread-max)}px #FFF"
+        );
+        $blink: string.replace($shadow, "#FFF", "#AAA");
+        box-shadow: $shadow;
+
+        $step: randomFloat(0, 0.8);
+        $start: randomFloat(15, 25);
+        $state: "";
+
+        $start-state: $shadow;
+        $end-state: $blink;
+
+        @keyframes blinkies-#{$i} {
+          @for $i from 0 to 3 {
+            @if $i==0 {
+              0% {
+                box-shadow: $shadow;
+              }
+            } @else if $i==2 {
+              100% {
+                box-shadow: $shadow;
+              }
+            } @else {
+              @for $k from 0 to random(5) + 1 {
+                $gap: randomFloat(8, 11);
+                @for $j from 0 to 3 {
+                  @if $j==2 {
+                    $state: $blink;
+                  } @else {
+                    $state: $shadow;
+                  }
+                  #{unquote("#{randomFloat($start+$step*$j+$gap*$k, $start+$step*($j+1)+$gap*$k)}%")} {
+                    box-shadow: $state;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        animation: unquote("#{randomFloat(10,25)}s")
+          linear
+          infinite
+          blinkies-#{$i};
+
+        $delay: random(750);
+        animation-delay: #{$delay}ms;
+      }
+    }
+  }
+}

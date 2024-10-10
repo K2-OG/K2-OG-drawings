@@ -1,0 +1,98 @@
+@use "sass:math";
+@use "../vapor.component.scss" as *;
+
+@mixin lilAntenas(
+  $current-fat,
+  $tallness,
+  $roof-height,
+  $total-height,
+  $shadow-position,
+  $align
+) {
+  $antenna: (math.div(random(30) + 40, 100));
+  $roof-height: $roof-height + $antenna;
+  $total-height: $total-height + $roof-height;
+  $move-x: $current-fat * math.div(random(5) + 3, 10);
+  $reflect: ($current-fat - $move-x) * math.div(random(4), 10);
+  @if ($align == 1) {
+    transform: translateX($move-x);
+    -webkit-box-reflect: left $reflect;
+  } @else if ($align == 3) {
+    transform: translateX(-$move-x);
+    -webkit-box-reflect: left $reflect;
+  } @else {
+    @if ($shadow-position == "left") {
+      $move-x: math.div($current-fat, 2) * 0.6;
+    } @else {
+      $move-x: math.div($current-fat, 2) * 0.7;
+    }
+    $reflect: $current-fat * math.div(random(6), 10);
+    transform: translateX($move-x);
+    -webkit-box-reflect: left $reflect;
+  }
+  $border-style: solid 1.5px;
+  $border-color: yellow;
+  border-top: $border-style $border-color;
+  @keyframes lilblink {
+    0% {
+      border-top: $border-style $border-color;
+    }
+    25% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0.5);
+    }
+    50% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0);
+    }
+    75% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0.5);
+    }
+    100% {
+      border-top: $border-style $border-color;
+    }
+  }
+  animation: lilblink 1.5s infinite linear;
+  $delay: random(750);
+  animation-delay: #{$delay}ms;
+
+  background: $building-color;
+  height: ceil($roof-height) + 1;
+  width: 1px;
+}
+
+@mixin radio($roof-height, $total-height, $tallness, $align) {
+  @if $align==1 {
+    margin-left: 2px;
+  } @else if $align==2 {
+    align-self: center;
+  } @else if $align==3 {
+    margin-right: 2px;
+  }
+  $antenna: (math.div(random(100) + 70, 100) * math.div($tallness, 10));
+  width: 1px;
+  height: $antenna;
+  $roof-height: $roof-height + $antenna;
+  $total-height: $total-height + $roof-height;
+  $border-style: solid 1.5px;
+  $border-color: red;
+  border-top: $border-style $border-color;
+  @keyframes blink {
+    0% {
+      border-top: $border-style $border-color;
+    }
+    25% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0.5);
+    }
+    50% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0);
+    }
+    75% {
+      border-top: $border-style rgba($color: $border-color, $alpha: 0.5);
+    }
+    100% {
+      border-top: $border-style $border-color;
+    }
+  }
+  animation: blink 1.5s infinite linear;
+  $delay: random(750);
+  animation-delay: #{$delay}ms;
+}

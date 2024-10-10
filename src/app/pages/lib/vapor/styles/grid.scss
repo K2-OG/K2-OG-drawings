@@ -1,8 +1,8 @@
 @use "sass:math";
-@use "./vapor.component.scss" as *;
+@use "../vapor.component.scss" as *;
 
 // THE GRID
-$road-color: #090979;
+$road-color: #0e0e59;
 .grid-wrapper {
   perspective: 80px;
   .grid-bg {
@@ -64,41 +64,50 @@ $road-color: #090979;
   .track {
     background-image: linear-gradient($road-color, $road-color);
     transform-origin: bottom;
-    transform: translateY(2px) translateX(171px) rotateX(160deg) scaleX(4)
+    transform: translateY(1px) translateX(171px) rotateX(160deg) scaleX(4)
       scaleY(2.7);
     position: absolute;
     height: $size;
-    width: $size/6.6;
+    width: math.div($size, 6.6);
     box-shadow: 0 0 730px 0px $road-color;
-    border: #cc262678 3px solid;
+    border: rgb(46, 46, 46) 3px solid;
     border-top: 0;
     border-bottom: 0;
-    &::after {
+    &::after,
+    &::before {
       content: "";
-      background-size: 100% 20%, $size/12.12;
+      background-size: 100% 20%, math.div($size, 12.12);
       background-position: 0 10px, 100% 0;
-      background-image: linear-gradient(
-          to right,
-          #ffffff 3%,
-          transparent 0px,
-          transparent 97%,
-          #ffffff 97%
-        ),
-        linear-gradient(to bottom, $road-color 30px, transparent 30px),
-        linear-gradient(to right, #000000 $grid-border + 3, transparent 0px);
       position: absolute;
       height: $size;
-      width: $size/6.6;
+      width: math.div($size, 6.6);
+    }
+    &::after {
+      background-image: linear-gradient(
+        to right,
+        #000 2%,
+        transparent 0px,
+        transparent 98%,
+        #000 98%
+      );
+    }
+    &::before {
+      background-image: linear-gradient(
+          to bottom,
+          $road-color 30px,
+          transparent 30px
+        ),
+        linear-gradient(to right, #8c7c00 $grid-border + 3, transparent 0px);
       animation: $road-animation;
     }
   }
 }
 
 @keyframes stroll {
-  // 0% {
-  //   background-position-y: 0;
-  // }
-  // 100% {
-  //   background-position-y: 240px;
-  // }
+  0% {
+    background-position-y: 0;
+  }
+  100% {
+    background-position-y: 240px;
+  }
 }
