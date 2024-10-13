@@ -34,7 +34,7 @@ $height: 80px;
       ),
       linear-gradient(green 0px, green 70px, transparent 70px, transparent 100%);
     background-size: 40px 70px, 20px 130px, 20px 130px, $width $height;
-    background-position: 10px 0, 0px -60px, 40px -65px, 0 0;
+    background-position: 10px 0, 0px -65px, 40px -65px, 0 0;
     background-repeat: no-repeat;
     transform: translate(
         math.div($size, 2) - math.div($width, 2),
