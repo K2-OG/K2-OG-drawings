@@ -68,13 +68,14 @@
     </div>
 
     <!-- POST GRAIN -->
-    <div class="grain"></div>
+    <!-- <div class="grain"></div> -->
   </div>
 </main>
 
 <ng-template #roofs let-amount="amount">
   <div class="roof-container">
     <div class="roof" *ngFor="let roof of amount">
+      <div class="roof-body"></div>
       <div class="roof-shadow"></div>
     </div>
   </div>

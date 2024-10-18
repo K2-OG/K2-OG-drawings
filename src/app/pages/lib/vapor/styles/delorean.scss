@@ -24,8 +24,8 @@ $height: 80px;
     background: linear-gradient(silver 0 0),
       conic-gradient(
         transparent 0deg 180deg,
-        silver 180deg 198deg,
-        transparent 198deg 360deg
+        silver 180deg 195deg,
+        transparent 195deg 360deg
       ),
       conic-gradient(
         transparent 0deg 165deg,
@@ -62,13 +62,13 @@ $height: 80px;
         conic-gradient(
           at 100% 0,
           transparent 0deg 180deg,
-          rgb(49, 32, 45) 180deg 198deg,
-          transparent 198deg 360deg
+          rgb(49, 32, 45) 180deg 200deg,
+          transparent 200deg 360deg
         ),
         conic-gradient(
           at 0 0,
-          transparent 0deg 165deg,
-          rgb(49, 32, 45) 165deg 180deg,
+          transparent 0deg 160deg,
+          rgb(49, 32, 45) 160deg 180deg,
           transparent 180deg 360deg
         );
       background-size: 

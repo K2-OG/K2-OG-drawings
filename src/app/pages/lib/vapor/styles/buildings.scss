@@ -6,6 +6,7 @@
 @use "./shadows.scss" as shadows;
 @use "./roofs.scss" as roofs;
 @use "./lights.scss" as lights;
+@use "./glitch.scss" as glitch;
 
 $border: $shadow-start-color 0.5px solid;
 
@@ -86,6 +87,7 @@ $exit: 300px;
   @include buildItUp($shadow-position, $tallness, $fatness, $tallness);
   @include windows.windowToTheWorld($tallness, $fatness);
   @include roofs.demRoofies($shadow-position, $tallness, $fatness, $align);
+  @include glitch.chromaticAbberation($tallness, $fatness);
   $total-height: $tallness;
 }
 
@@ -138,7 +140,9 @@ $vertical-position: 52px;
         flex-direction: column-reverse;
         .roof {
           background: $building-color;
-          display: none;
+          .roof-body {
+            z-index: -10;
+          }
         }
       }
     }

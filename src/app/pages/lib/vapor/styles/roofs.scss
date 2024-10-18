@@ -2,39 +2,21 @@
 @use "../vapor.component.scss" as *;
 @use "./shadows.scss" as shadows;
 @use "./antennas.scss" as antennas;
+@use "./glitch.scss" as glitch;
 
 @mixin buildItUp($shadow-position, $tallness, $fatness, $total-height, $align) {
   background: $building-color;
   height: ceil($tallness) + 1;
   width: $fatness;
   @if ($total-height > $tallness) {
-    // @if ($align == 1 or $align == 3) {
-    //   display: flex;
-    //   @if ($align == 1) {
-    //     justify-content: flex-end;
-    //   } @else if ($align == 3) {
-    //     justify-content: flex-start;
-    //   }
-    //   &::after {
-    //     content: "";
-    //     display: inline-block;
-    //     border-style: solid;
-    //     border-color: transparent transparent transparent transparent;
-    //     border-width: $tallness;
-    //     border-bottom: red solid $tallness;
-    //     @if ($align == 1) {
-    //       justify-self: flex-end;
-    //       margin-left: $tallness;
-    //       transform: rotate(-135deg);
-    //     } @else if ($align == 3) {
-    //       margin-right: $tallness;
-    //       justify-self: flex-start;
-    //       transform: rotate(135deg);
-    //     }
-    //   }
-    // }
     @if $fatness >= $antenna-limit {
       top: $building-container-height - $total-height;
+      .roof-body {
+        width: $fatness;
+        height: $tallness;
+        @include glitch.chromaticAbberation($tallness, $fatness);
+      }
+
       .roof-shadow {
         @include shadows.throwSomeShade($tallness, $fatness, $shadow-position);
         background: $shadow-start-color;
@@ -50,7 +32,6 @@
   $amount: random(6) + 1;
   @for $i from 1 through $amount {
     .roof {
-      display: block;
       $current-fat: $fatness - $i * 5;
       $roof-height: math.div(random(200) + 300px, 100);
       &:nth-child(#{$i}) {
