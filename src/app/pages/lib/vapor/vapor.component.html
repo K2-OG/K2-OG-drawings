@@ -63,19 +63,23 @@
     </div>
 
     <!-- DELOREAN -->
-    <div class="delorean-bopper">
+    <!-- <div class="delorean-bopper">
       <div class="delorean"></div>
-    </div>
+    </div> -->
 
     <!-- POST GRAIN -->
-    <!-- <div class="grain"></div> -->
+    <div class="grain">
+      <div class="grain-noise"></div>
+    </div>
   </div>
 </main>
 
 <ng-template #roofs let-amount="amount">
   <div class="roof-container">
     <div class="roof" *ngFor="let roof of amount">
-      <div class="roof-body"></div>
+      <div class="roof-body">
+        <div class="roof-body-inner"></div>
+      </div>
       <div class="roof-shadow"></div>
     </div>
   </div>

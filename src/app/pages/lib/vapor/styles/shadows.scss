@@ -1,19 +1,29 @@
 @use "sass:math";
 @use "../vapor.component.scss" as *;
 
-@mixin throwSomeShade($tall, $fat, $shadow-position) {
+@mixin throwSomeShade($tall, $fat, $shadow-position, $roof) {
   $fatness: math.div($fat, 10);
-  background: linear-gradient($shadow-start-color, $shadow-end-color);
   width: $fatness;
-  height: $tall + 1px;
-  align-self: flex-end;
-  z-index: 2;
-  $shadow-standard: 0px 0.5px 2px 0px $shadow-start-color;
+  $shadow-bleed: 0;
   @if $shadow-position == "left" {
-    box-shadow: $shadow-standard;
-    margin-left: -$fatness;
+    $shadow-bleed: 0.5px;
+  } @else if $shadow-position == "right" {
+    $shadow-bleed: -0.5px;
+  }
+  $shadow-top: 0px -1px 0px 0px #fff8c4;
+  $shadow-bot: 0px 1px 0px 0px #fff8c4;
+  $standard-shadow: $shadow-bleed 0px 2px 0px $shadow-start-color;
+  @if ($roof) {
+    height: $tall + 2px;
+    box-shadow: $standard-shadow, $shadow-bot;
   } @else {
-    box-shadow: -0px $shadow-standard;
+    background: linear-gradient($shadow-start-color, $shadow-end-color);
+    height: $tall + 1px;
+    box-shadow: $standard-shadow, $shadow-top;
     margin-left: $fat;
+  }
+
+  @if $shadow-position == "left" {
+    margin-left: -$fatness;
   }
 }

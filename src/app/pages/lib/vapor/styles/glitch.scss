@@ -1,40 +1,43 @@
 @keyframes glitchy {
   0% {
-    transform: translate(-2px, 2px);
+    transform: translate(-1px, 1px);
   }
   25% {
-    transform: translate(-2px, -2px);
+    transform: translate(-1px, -1px);
   }
   50% {
-    transform: translate(2px, 2px);
+    transform: translate(1px, 1px);
   }
   75% {
-    transform: translate(2px, -2px);
+    transform: translate(1px, -1px);
   }
   100% {
-    transform: translate(-2px, 2px);
+    transform: translate(-1px, 1px);
   }
 }
 
 @mixin chromaticAbberation($tallness, $fatness) {
   &:before,
   &:after {
-      content: "";
+    content: "";
     width: $fatness;
     height: $tallness;
     display: block;
     position: absolute;
+    z-index: -30;
   }
 
   &:before {
-    background-color: #00ffff;
-    z-index: -20;
-    animation: glitchy 0.3s ease 0.3s infinite;
+    background-color: #ff9d00e4;
+    animation: glitchy ease infinite;
+    animation-delay: unquote("#{random(400)}ms");
+    animation-duration: unquote("#{random(200)+200}ms");
   }
 
   &:after {
-    background-color: #ff00ff;
-    z-index: -20;
-    animation: glitchy 0.3s ease infinite reverse;
+    background-color: #9500ffca;
+    animation: glitchy ease infinite reverse;
+    animation-delay: unquote("#{random(400)}ms");
+    animation-duration: unquote("#{random(200)+200}ms");
   }
 }

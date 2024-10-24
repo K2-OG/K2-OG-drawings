@@ -4,22 +4,44 @@
 @use "./antennas.scss" as antennas;
 @use "./glitch.scss" as glitch;
 
-@mixin buildItUp($shadow-position, $tallness, $fatness, $total-height, $align) {
-  background: $building-color;
+@mixin buildItUp(
+  $shadow-position,
+  $tallness,
+  $fatness,
+  $total-height,
+  $og-fat,
+  $align
+) {
   height: ceil($tallness) + 1;
   width: $fatness;
   @if ($total-height > $tallness) {
     @if $fatness >= $antenna-limit {
-      top: $building-container-height - $total-height;
       .roof-body {
+        height: ceil($tallness) + 2;
+        background-color: $building-color;
         width: $fatness;
-        height: $tallness;
-        @include glitch.chromaticAbberation($tallness, $fatness);
+        border-top: $border;
+        .roof-body-inner {
+          border-top: $border;
+          background-color: $building-color;
+          width: $fatness - math.div($og-fat, 10);
+          height: ceil($tallness) + 3;
+        }
       }
 
       .roof-shadow {
-        @include shadows.throwSomeShade($tallness, $fatness, $shadow-position);
-        background: $shadow-start-color;
+        z-index: 20;
+        @if ($align == 3 and $shadow-position== "right") or
+          ($align == 1 and $shadow-position== "left")
+        {
+          $fatness: $og-fat;
+        }
+        @include shadows.throwSomeShade(
+          $tallness,
+          $fatness,
+          $shadow-position,
+          true
+        );
       }
     } @else {
       top: $building-container-height - $total-height + 2.6px;
@@ -28,6 +50,7 @@
 }
 
 @mixin demRoofies($shadow-position, $tallness, $fatness, $align) {
+  $og-fat: $fatness;
   $total-height: $tallness;
   $amount: random(6) + 1;
   @for $i from 1 through $amount {
@@ -37,6 +60,7 @@
       &:nth-child(#{$i}) {
         $total-height: $total-height + $roof-height;
         @if ($current-fat < 0.1) {
+          border-top: none;
           $current-fat: 0;
         } @else if $current-fat < $antenna-limit {
           @include antennas.radio(
@@ -46,18 +70,23 @@
             $align
           );
         } @else {
-          border-top: $border;
           margin-bottom: -1px;
           z-index: 1;
+          @include glitch.chromaticAbberation($roof-height, $current-fat);
           @include buildItUp(
             $shadow-position,
             $roof-height,
             $current-fat,
             $total-height,
+            $og-fat,
             $align
           );
         }
       }
+
+      // @if ($shadow-position== "right") {
+      //   flex-direction: row;
+      // }
 
       @if ($current-fat > 18px and $amount==$i) {
         &:nth-child(#{$i + 1}) {

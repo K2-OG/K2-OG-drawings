@@ -54,7 +54,6 @@
   $delay: random(750);
   animation-delay: #{$delay}ms;
 
-  background: $building-color;
   height: ceil($roof-height) + 1;
   width: 1px;
 }

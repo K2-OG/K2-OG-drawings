@@ -51,7 +51,7 @@
     @if $fatness >= $antenna-limit {
       top: $building-container-height - $total-height;
       .roof-shadow {
-        @include throwSomeShade($tallness, $fatness, $shadow-position);
+        @include throwSomeShade($tallness, $fatness, $shadow-position, false);
       }
     } @else {
       top: $building-container-height - $total-height + 2.6px;
@@ -60,7 +60,7 @@
     $repeatitions: random(30) + 20;
     background-repeat: no-repeat;
     .shadow {
-      @include throwSomeShade($tallness, $fatness, $shadow-position);
+      @include throwSomeShade($tallness, $fatness, $shadow-position, false);
     }
   }
 }

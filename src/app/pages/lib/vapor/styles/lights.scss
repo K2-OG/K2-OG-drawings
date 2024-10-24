@@ -18,9 +18,9 @@ $light-start-pos-x: -100;
   @for $i from 0 to $repeatitions {
     $mod: random(2);
     @if $mod == 1 {
-      $mod: 1;
+      $mod: random(4);
     } @else {
-      $mod: -2;
+      $mod: - random(4);
     }
     $bg-value: "#{$bg-value} #{$mod*$light-start-pos-x}%,";
   }
@@ -28,7 +28,7 @@ $light-start-pos-x: -100;
 }
 
 @function randomLights($repeatitions) {
-  $end-max-value: 10;
+  $end-max-value: 5;
   $end-min-value: 0;
   $alpha-value: 15;
   $alpha-min: 5;
@@ -45,25 +45,42 @@ $light-start-pos-x: -100;
   $lights-position: randomLightsPositions($repeatitions);
   $lights-size: randomLightsSizes($repeatitions);
   .body {
-    background: $lights $building-color;
-    background-position-x: $lights-position 0;
-    background-size: $lights-size 0;
+    $street-light-side-generator: random(3);
+    $street-light-side: "";
+    @if $street-light-side-generator==1 {
+      $street-light-side: " left";
+    } @else if $street-light-side-generator==3 {
+      $street-light-side: " right";
+    }
+    ///
+    $street-light: unquote(
+      "radial-gradient(circle at bottom #{$street-light-side},  rgba(255, 255, 255, #{random(15)+20}%), transparent  #{random(15)+30}%), "
+    );
+    $street-light-position: unquote("0%, ");
+    $street-light-size: unquote("100% 100%, ");
+    background: $street-light $lights $building-color;
+    background-position-x: $street-light-position $lights-position 0;
+    background-size: $street-light-size $lights-size 0;
     $traffic-mvmnt: string.replace(
       $lights-position,
       " #{$light-start-pos-x}%",
-      " 400%"
+      " -#{random(200)+350}%"
     );
-    $traffic-mvmnt: string.replace($traffic-mvmnt, " 200%", " -300%");
+    $traffic-mvmnt: string.replace(
+      $traffic-mvmnt,
+      " 200%",
+      " -#{random(200)+250}%"
+    );
     background-repeat: no-repeat;
     @keyframes traffic {
       0% {
-        background-position-x: $lights-position 0;
+        background-position-x: $street-light-position $lights-position 0;
       }
       99.9% {
-        background-position-x: $traffic-mvmnt 0;
+        background-position-x: $street-light-position $traffic-mvmnt 0;
       }
       100% {
-        background-position-x: $lights-position 0;
+        background-position-x: $street-light-position $lights-position 0;
       }
     }
     animation: unquote("#{randomFloat(10,20)}s") linear infinite traffic;
